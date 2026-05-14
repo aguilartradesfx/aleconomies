@@ -39,10 +39,10 @@ export default function Nav() {
           onClick={() => setActive('Inicio')}
         >
           <Image
-            src="/images/logo-full-white.png"
+            src="/images/logo-icon-white.png"
             alt="Aleconomies"
-            width={140}
-            height={36}
+            width={34}
+            height={34}
             priority
             style={{ objectFit: 'contain' }}
           />

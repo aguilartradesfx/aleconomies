@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileDown, CheckCircle2 } from 'lucide-react'
 
 const STORAGE_KEY = 'exit-modal-shown'
-const MOBILE_DELAY_MS = 45_000
 
 export default function ExitIntentModal() {
   const [visible, setVisible] = useState(false)
@@ -16,24 +15,27 @@ export default function ExitIntentModal() {
   useEffect(() => {
     if (sessionStorage.getItem(STORAGE_KEY)) return
 
+    let fired = false
     const show = () => {
+      if (fired) return
+      fired = true
       setVisible(true)
       sessionStorage.setItem(STORAGE_KEY, '1')
     }
 
-    // On touch devices, mouseleave never fires — use a time-based trigger instead
-    const isTouchDevice = window.matchMedia('(hover: none)').matches
-
-    if (isTouchDevice) {
-      const t = setTimeout(show, MOBILE_DELAY_MS)
-      return () => clearTimeout(t)
-    }
-
+    // Desktop: cursor exits document from the top (heading to address bar / close tab)
     const onLeave = (e: MouseEvent) => {
-      if (e.clientY < 10) show()
+      if (e.clientY <= 0) show()
     }
     document.addEventListener('mouseleave', onLeave)
-    return () => document.removeEventListener('mouseleave', onLeave)
+
+    // Fallback for all devices: fire after 60s if exit intent never triggered
+    const timer = setTimeout(show, 60_000)
+
+    return () => {
+      document.removeEventListener('mouseleave', onLeave)
+      clearTimeout(timer)
+    }
   }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
