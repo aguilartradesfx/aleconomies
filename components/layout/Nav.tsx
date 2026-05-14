@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import Image from 'next/image'
 
 const links = [
   { label: 'Inicio',       href: '#inicio'     },
@@ -11,10 +12,6 @@ const links = [
   { label: 'Sobre mí',     href: '#sobre'      },
   { label: 'Recursos',     href: '#recursos'   },
 ]
-
-function LogoMark() {
-  return <div className="logo-mark" aria-hidden="true" />
-}
 
 export default function Nav() {
   const [active, setActive] = useState(links[0].label)
@@ -41,11 +38,17 @@ export default function Nav() {
           className="nav-logo"
           onClick={() => setActive('Inicio')}
         >
-          <LogoMark />
-          <span>alejandro</span>
+          <Image
+            src="/images/logo-full-white.png"
+            alt="Aleconomies"
+            width={140}
+            height={36}
+            priority
+            style={{ objectFit: 'contain' }}
+          />
         </a>
 
-        {/* Desktop links — cada ítem tiene posición relativa para el indicador */}
+        {/* Desktop links */}
         <ul className="nav-links-desktop" role="list">
           {links.map(link => (
             <li key={link.label} style={{ position: 'relative' }}>

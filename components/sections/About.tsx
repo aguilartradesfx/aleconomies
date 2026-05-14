@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import SectionEyebrow from '@/components/ui/SectionEyebrow'
 
 const ease = [0.16, 1, 0.3, 1] as const
@@ -25,8 +26,14 @@ export default function About() {
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, ease }}
           >
-            <div className="about-photo">
-              <span className="about-photo-label">Foto de Alejandro</span>
+            <div className="about-photo" style={{ position: 'relative' }}>
+              <Image
+                src="https://res.cloudinary.com/dm4vljcnv/image/upload/q_auto/f_auto/v1778741064/_A735535_uk3ait.jpg"
+                alt="Alejandro Aguilar"
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
             </div>
 
             <div className="about-stats-badge">

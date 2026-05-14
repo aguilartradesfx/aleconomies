@@ -9,32 +9,44 @@ const ease = [0.16, 1, 0.3, 1] as const
 
 const faqs = [
   {
-    q: '¿Cómo cobra usted?',
-    a: '[Explicar modelo de cobro: fee fijo / porcentaje sobre patrimonio / mixto. Confirmar con Alejandro antes del deploy.]',
+    q: '¿La asesoría es grupal o individual?',
+    a: 'La asesoría es uno a uno y personalizada a tu situación financiera. No es un curso masivo.',
   },
   {
-    q: '¿Cuánto dinero necesito para empezar?',
-    a: 'El mínimo recomendado es destinar al menos ₡25.000 mensuales a su estrategia. Si está por debajo, primero trabajamos la base de ahorro antes de pensar en inversión.',
+    q: '¿Cuánto cuesta la asesoría?',
+    a: 'La asesoría tiene un costo de $97 USD, con acceso vitalicio a futuras consultas sin costos extra.',
   },
   {
-    q: '¿Puedo salirme si no me convence?',
-    a: '[Confirmar con Alejandro: ¿hay tiempo mínimo de compromiso? Incluir aquí la respuesta honesta.]',
+    q: '¿Qué temas se ven en la asesoría?',
+    a: 'Evaluamos tu situación financiera, te enseño a invertir según tu perfil, exploramos opciones nacionales e internacionales, y estructuramos un plan realista.',
   },
   {
-    q: '¿Está usted regulado o registrado ante alguna entidad?',
-    a: '[CRÍTICO: confirmar con Alejandro su situación regulatoria ante SUGEVAL u organismo equivalente antes del deploy.]',
+    q: '¿Cuánto dura la asesoría?',
+    a: 'Entre 1 y 2 horas, dependiendo de la profundidad que necesites.',
   },
   {
-    q: '¿En qué tipo de instrumentos invierte?',
-    a: '[Confirmar lista de instrumentos con Alejandro: fondos de inversión, ETFs internacionales, bonos, certificados, bienes raíces, etc.]',
+    q: '¿Necesito mucho dinero para empezar a invertir?',
+    a: 'No. Existen opciones para iniciar con montos accesibles según tu presupuesto.',
   },
   {
-    q: '¿Atiende clientes fuera de Costa Rica?',
-    a: '[Confirmar con Alejandro: ticos en el exterior, extranjeros en CR, modalidad remoto/presencial.]',
+    q: '¿En qué tipo de inversiones me asesoras?',
+    a: 'En renta fija, renta variable (acciones y ETFs), bienes raíces, fondos de inversión, y más, siempre en mercados regulados.',
   },
   {
-    q: '¿Por qué no enseña trading o inversión rápida?',
-    a: 'Porque no creo en eso. La construcción de patrimonio real toma tiempo, disciplina y una estrategia que se mantenga aún cuando el mercado se mueva. Si busca atajos, hay otros lugares — pero no son sostenibles.',
+    q: '¿Mi dinero está seguro?',
+    a: 'Toda inversión implica riesgos, pero trabajamos únicamente con plataformas y entidades reguladas y supervisadas internacionalmente.',
+  },
+  {
+    q: '¿Dónde se deposita el dinero?',
+    a: 'Directamente en plataformas de inversión reguladas y a tu nombre. No gestiono tu dinero; tú tienes el control total.',
+  },
+  {
+    q: '¿Es necesario comprar un curso antes?',
+    a: 'No. La asesoría incluye todo lo que necesitas para comenzar de forma clara y práctica.',
+  },
+  {
+    q: '¿Puedo solicitar apoyo después de la asesoría?',
+    a: 'Sí. Tienes acompañamiento vitalicio para futuras dudas o necesidades relacionadas a tu estrategia de inversión.',
   },
 ]
 

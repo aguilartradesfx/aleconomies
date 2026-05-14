@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const navLinks = [
   { label: 'Inicio',       href: '#inicio'     },
   { label: 'Para quién',   href: '#para-quien' },
@@ -6,10 +8,6 @@ const navLinks = [
   { label: 'Recursos',     href: '#recursos'   },
   { label: 'FAQ',          href: '#faq'        },
 ]
-
-function LogoMark() {
-  return <div className="logo-mark" aria-hidden="true" />
-}
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -20,12 +18,15 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Col 1 — Logo + tagline */}
           <div>
-            <div className="nav-logo" style={{ textDecoration: 'none' }}>
-              <LogoMark />
-              <span style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.3px', color: 'var(--text)' }}>
-                alejandro
-              </span>
-            </div>
+            <a href="#inicio" className="nav-logo" style={{ textDecoration: 'none', marginBottom: 12, display: 'inline-flex' }}>
+              <Image
+                src="/images/logo-full-white.png"
+                alt="Aleconomies"
+                width={140}
+                height={36}
+                style={{ objectFit: 'contain' }}
+              />
+            </a>
             <p className="footer-tagline">
               Asesoría financiera independiente 1 a 1 en Costa Rica. Construyendo claridad
               financiera, una conversación a la vez.
