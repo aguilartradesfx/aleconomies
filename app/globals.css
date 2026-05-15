@@ -1819,6 +1819,9 @@ body::after {
     gap: 48px;
   }
   .hero-cards { display: none; }
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
   .calculator-card {
     grid-template-columns: 1fr;
     gap: 36px;

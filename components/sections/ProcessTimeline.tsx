@@ -8,27 +8,27 @@ const ease = [0.16, 1, 0.3, 1] as const
 const steps = [
   {
     num: '1',
-    title: 'Diagnóstico inicial',
-    time: '30-45 min · Gratis',
-    desc: 'Conversamos para entender su situación actual, sus objetivos y su perfil de riesgo. Si veo que puedo aportarle valor, se lo digo. Si no, también — y le recomiendo a dónde ir.',
+    title: 'Llamada de aclaración de servicio',
+    time: '15 min · Gratis',
+    desc: 'Conversamos para entender mejor su situación actual, sus objetivos y su perfil de riesgo. Se explica a profundidad cómo funciona el servicio de acompañamiento de inversiones. Si es lo que busca en este momento, se agenda el espacio de asesoría.',
   },
   {
     num: '2',
-    title: 'Diseño de su estrategia',
-    time: '1-2 semanas',
-    desc: 'Construyo un plan personalizado: dónde colocar su plata, en qué proporción, con qué horizonte y por qué. Se lo presento en una segunda reunión donde lo revisamos juntos y ajustamos lo que haga falta.',
+    title: 'Asesoría de Inversión',
+    time: '1-2 h',
+    desc: 'Espacio directo con el asesor para evaluar sus objetivos, conocer los plazos a los que puede invertir y diseñar la estrategia personalizada. La duración varía entre 1 y 2 horas dependiendo de la cantidad de consultas que tenga. En este tiempo se explican a profundidad las diferentes opciones para invertir tanto a nivel nacional como internacional. Al finalizar, usted tendrá el plan adecuado a sus necesidades.',
   },
   {
     num: '3',
-    title: 'Implementación',
-    time: 'Paso a paso',
-    desc: 'Ejecutamos la estrategia. Le explico cada movimiento — el objetivo es que usted entienda lo que está haciendo con su plata, no que dependa ciegamente de mí.',
+    title: 'Implementación y formalización',
+    time: '3 días',
+    desc: 'Completamos los formularios necesarios para sus inversiones: KYC, beneficiarios, contratos, seguros, órdenes de inversión y consentimientos informados. Usted deberá adjuntar: (1) origen de fondos vía orden patronal si es asalariado, o constancia de CPA si es profesional independiente; (2) trazabilidad mediante estados de cuenta que demuestren la existencia del dinero; y (3) comprobación de residencia mediante recibo de servicios para inversiones internacionales.',
   },
   {
     num: '4',
     title: 'Acompañamiento continuo',
     time: 'Sin fecha de expiración',
-    desc: 'Revisamos juntos cada trimestre. El mercado cambia, su vida cambia, sus objetivos cambian. La estrategia se ajusta con usted — no se queda en un PDF olvidado.',
+    desc: 'Revisamos juntos cada mes. El mercado cambia, su vida cambia, sus objetivos cambian. La estrategia se ajusta con usted — no se queda en un PDF olvidado.',
   },
 ]
 

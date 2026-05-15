@@ -10,13 +10,23 @@ const RADIUS = 80
 const CIRC = 2 * Math.PI * RADIUS
 
 const ease = [0.16, 1, 0.3, 1] as const
-
 const SPRING = { type: 'spring' as const, stiffness: 120, damping: 22 }
+
+const SEGMENTS = [
+  { key: 'stocks',     label: 'Acciones',        color: 'var(--purple)'       },
+  { key: 'bonds',      label: 'Bonos',            color: 'var(--purple-light)' },
+  { key: 'indexed',    label: 'Fondos Indexados', color: 'var(--purple-bright)'},
+  { key: 'realEstate', label: 'Inmobiliario',     color: 'var(--ink-300)'      },
+  { key: 'crypto',     label: 'Cripto',           color: 'var(--ink-400)'      },
+  { key: 'cash',       label: 'Efectivo',         color: 'var(--ink-500)'      },
+  { key: 'options',    label: 'Opciones',         color: 'var(--ink-600)'      },
+] as const
+
+type SegmentKey = typeof SEGMENTS[number]['key']
 
 function getLevelColor(level: number): string {
   if (level <= 3) return 'var(--ink-300)'
   if (level <= 5) return 'var(--purple-light)'
-  if (level <= 7) return 'var(--purple)'
   return 'var(--purple)'
 }
 
@@ -26,40 +36,52 @@ export default function RiskProfile() {
 
   const profile = RISK_PROFILES[level]
 
-  const stocksLen = useMotionValue(RISK_PROFILES[5].stocks / 100 * CIRC)
-  const bondsLen  = useMotionValue(RISK_PROFILES[5].bonds / 100 * CIRC)
-  const cashLen   = useMotionValue(RISK_PROFILES[5].cash / 100 * CIRC)
+  // One motion value per segment arc length
+  const lenStocks     = useMotionValue(RISK_PROFILES[5].allocation.stocks     / 100 * CIRC)
+  const lenBonds      = useMotionValue(RISK_PROFILES[5].allocation.bonds      / 100 * CIRC)
+  const lenIndexed    = useMotionValue(RISK_PROFILES[5].allocation.indexed    / 100 * CIRC)
+  const lenRealEstate = useMotionValue(RISK_PROFILES[5].allocation.realEstate / 100 * CIRC)
+  const lenCrypto     = useMotionValue(RISK_PROFILES[5].allocation.crypto     / 100 * CIRC)
+  const lenCash       = useMotionValue(RISK_PROFILES[5].allocation.cash       / 100 * CIRC)
+  const lenOptions    = useMotionValue(RISK_PROFILES[5].allocation.options    / 100 * CIRC)
 
-  const stocksDash = useTransform(stocksLen, v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
-  const bondsDash  = useTransform(bondsLen,  v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
-  const cashDash   = useTransform(cashLen,   v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  // Dasharray strings
+  const dashStocks     = useTransform(lenStocks,     v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashBonds      = useTransform(lenBonds,      v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashIndexed    = useTransform(lenIndexed,    v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashRealEstate = useTransform(lenRealEstate, v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashCrypto     = useTransform(lenCrypto,     v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashCash       = useTransform(lenCash,       v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashOptions    = useTransform(lenOptions,    v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
 
-  const bondsOffset = useTransform(stocksLen, v => -v)
-  const cashOffset  = useMotionValue(
-    -(RISK_PROFILES[5].stocks + RISK_PROFILES[5].bonds) / 100 * CIRC,
-  )
-
-  useEffect(() => {
-    const sync = () => cashOffset.set(-(stocksLen.get() + bondsLen.get()))
-    const unsub1 = stocksLen.on('change', sync)
-    const unsub2 = bondsLen.on('change', sync)
-    return () => { unsub1(); unsub2() }
-  }, [stocksLen, bondsLen, cashOffset])
+  // Offsets — each segment starts after all previous ones
+  const offStocks     = 0
+  const offBonds      = useTransform(lenStocks, v => -v)
+  const offIndexed    = useTransform([lenStocks, lenBonds],                                   ([s, b]: number[])             => -(s + b))
+  const offRealEstate = useTransform([lenStocks, lenBonds, lenIndexed],                       ([s, b, i]: number[])          => -(s + b + i))
+  const offCrypto     = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate],        ([s, b, i, r]: number[])       => -(s + b + i + r))
+  const offCash       = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto], ([s, b, i, r, c]: number[]) => -(s + b + i + r + c))
+  const offOptions    = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash], ([s, b, i, r, c, ca]: number[]) => -(s + b + i + r + c + ca))
 
   const glowIntensity = 4 + level * 1.5
 
   useEffect(() => {
-    const p = RISK_PROFILES[level]
-    if (reduced) {
-      stocksLen.set(p.stocks / 100 * CIRC)
-      bondsLen.set(p.bonds / 100 * CIRC)
-      cashLen.set(p.cash / 100 * CIRC)
-      return
+    const a = RISK_PROFILES[level].allocation
+    const targets: [ReturnType<typeof useMotionValue<number>>, number][] = [
+      [lenStocks,     a.stocks     / 100 * CIRC],
+      [lenBonds,      a.bonds      / 100 * CIRC],
+      [lenIndexed,    a.indexed    / 100 * CIRC],
+      [lenRealEstate, a.realEstate / 100 * CIRC],
+      [lenCrypto,     a.crypto     / 100 * CIRC],
+      [lenCash,       a.cash       / 100 * CIRC],
+      [lenOptions,    a.options    / 100 * CIRC],
+    ]
+    for (const [mv, target] of targets) {
+      if (reduced) { mv.set(target) } else { animate(mv, target, SPRING) }
     }
-    animate(stocksLen, p.stocks / 100 * CIRC, SPRING)
-    animate(bondsLen,  p.bonds / 100 * CIRC,  SPRING)
-    animate(cashLen,   p.cash / 100 * CIRC,   SPRING)
-  }, [level, reduced, stocksLen, bondsLen, cashLen])
+  }, [level, reduced, lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash, lenOptions])
+
+  const alloc = profile.allocation
 
   return (
     <section id="perfil" className="risk-section">
@@ -90,14 +112,7 @@ export default function RiskProfile() {
         >
           {/* ── Left: controls ── */}
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                color: 'var(--text-3)',
-                marginBottom: 24,
-                lineHeight: 1.6,
-              }}
-            >
+            <p style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 24, lineHeight: 1.6 }}>
               De 1 (conservador) a 10 (agresivo). La asignación se ajusta en tiempo real.
             </p>
 
@@ -113,27 +128,13 @@ export default function RiskProfile() {
 
             <hr className="risk-divider" />
 
-            <div
-              style={{
-                fontSize: 11,
-                letterSpacing: '1.2px',
-                textTransform: 'uppercase',
-                color: 'var(--text-3)',
-                marginBottom: 10,
-              }}
-            >
+            <div style={{ fontSize: 11, letterSpacing: '1.2px', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 10 }}>
               Perfil actual
             </div>
 
             <div className="risk-profile-name">
               Perfil{' '}
-              <em
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontStyle: 'italic',
-                  color: getLevelColor(level),
-                }}
-              >
+              <em style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: getLevelColor(level) }}>
                 {profile.name}
               </em>
             </div>
@@ -148,7 +149,6 @@ export default function RiskProfile() {
 
           {/* ── Right: donut ── */}
           <div className="risk-donut-wrap">
-            {/* SVG donut */}
             <div style={{ position: 'relative', width: 200, height: 200 }}>
               <svg
                 width={200}
@@ -158,102 +158,76 @@ export default function RiskProfile() {
                 style={{ transform: 'rotate(-90deg)' }}
               >
                 {/* Background track */}
-                <circle
-                  cx={100} cy={100} r={RADIUS}
-                  fill="none"
-                  stroke="rgba(255,255,255,0.06)"
-                  strokeWidth={16}
+                <circle cx={100} cy={100} r={RADIUS} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={16} />
+
+                {/* Acciones */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--purple)" strokeWidth={16}
+                  strokeDasharray={dashStocks} strokeDashoffset={offStocks} strokeLinecap="butt"
+                  style={{ filter: `drop-shadow(0 0 ${glowIntensity}px rgba(139,92,246,0.6))` }}
                 />
-                {/* Stocks — morado */}
-                <motion.circle
-                  cx={100} cy={100} r={RADIUS}
-                  fill="none"
-                  stroke="var(--purple)"
-                  strokeWidth={16}
-                  strokeDasharray={stocksDash}
-                  strokeDashoffset={0}
-                  strokeLinecap="butt"
-                  style={{
-                    filter: `drop-shadow(0 0 ${glowIntensity}px rgba(139,92,246,0.6))`,
-                  }}
+                {/* Bonos */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--purple-light)" strokeWidth={16}
+                  strokeDasharray={dashBonds} strokeDashoffset={offBonds} strokeLinecap="butt"
                 />
-                {/* Bonds — morado claro */}
-                <motion.circle
-                  cx={100} cy={100} r={RADIUS}
-                  fill="none"
-                  stroke="var(--purple-light)"
-                  strokeWidth={16}
-                  strokeDasharray={bondsDash}
-                  strokeDashoffset={bondsOffset}
-                  strokeLinecap="butt"
+                {/* Fondos Indexados */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--purple-bright)" strokeWidth={16}
+                  strokeDasharray={dashIndexed} strokeDashoffset={offIndexed} strokeLinecap="butt"
                 />
-                {/* Cash — gris */}
-                <motion.circle
-                  cx={100} cy={100} r={RADIUS}
-                  fill="none"
-                  stroke="var(--ink-600)"
-                  strokeWidth={16}
-                  strokeDasharray={cashDash}
-                  strokeDashoffset={cashOffset}
-                  strokeLinecap="butt"
+                {/* Inmobiliario */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--ink-300)" strokeWidth={16}
+                  strokeDasharray={dashRealEstate} strokeDashoffset={offRealEstate} strokeLinecap="butt"
+                />
+                {/* Cripto */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--ink-400)" strokeWidth={16}
+                  strokeDasharray={dashCrypto} strokeDashoffset={offCrypto} strokeLinecap="butt"
+                />
+                {/* Efectivo */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--ink-500)" strokeWidth={16}
+                  strokeDasharray={dashCash} strokeDashoffset={offCash} strokeLinecap="butt"
+                />
+                {/* Opciones */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="var(--ink-600)" strokeWidth={16}
+                  strokeDasharray={dashOptions} strokeDashoffset={offOptions} strokeLinecap="butt"
                 />
               </svg>
 
               {/* Center text */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  textAlign: 'center',
-                  pointerEvents: 'none',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '17px',
-                    fontWeight: 500,
-                    color: 'var(--text)',
-                    letterSpacing: '-0.5px',
-                    lineHeight: 1.2,
-                  }}
-                >
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center', pointerEvents: 'none' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '17px', fontWeight: 500, color: 'var(--text)', letterSpacing: '-0.5px', lineHeight: 1.2 }}>
                   {profile.return}
                 </div>
-                <div style={{ fontSize: '10px', color: 'var(--text-3)', marginTop: 2 }}>
-                  anual
-                </div>
+                <div style={{ fontSize: '10px', color: 'var(--text-3)', marginTop: 2 }}>anual</div>
               </div>
             </div>
 
-            {/* Legend */}
-            <div className="risk-legend">
-              <div className="risk-legend-item">
-                <div className="risk-legend-swatch" style={{ background: 'var(--purple)' }} />
-                <span>Acciones</span>
-                <span className="risk-legend-pct">{profile.stocks}%</span>
-              </div>
-              <div className="risk-legend-item">
-                <div
-                  className="risk-legend-swatch"
-                  style={{ background: 'var(--purple-light)' }}
-                />
-                <span>Bonos</span>
-                <span className="risk-legend-pct">{profile.bonds}%</span>
-              </div>
-              <div className="risk-legend-item">
-                <div
-                  className="risk-legend-swatch"
-                  style={{ background: 'var(--ink-600)' }}
-                />
-                <span>Efectivo</span>
-                <span className="risk-legend-pct">{profile.cash}%</span>
-              </div>
+            {/* Legend — only non-zero segments */}
+            <div className="risk-legend" aria-live="polite">
+              {SEGMENTS.map(seg => {
+                const pct = alloc[seg.key as SegmentKey]
+                if (pct === 0) return null
+                return (
+                  <div key={seg.key} className="risk-legend-item">
+                    <div className="risk-legend-swatch" style={{ background: seg.color }} />
+                    <span>{seg.label}</span>
+                    <span className="risk-legend-pct">{pct}%</span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </motion.div>
+
+        {/* Disclaimer */}
+        <p style={{ fontSize: 12, color: 'var(--text-3)', textAlign: 'center', marginTop: 16, fontStyle: 'italic' }}>
+          Asignaciones referenciales. Su portafolio real se diseña en la asesoría personalizada, considerando sus objetivos, horizonte y situación particular.
+        </p>
       </div>
     </section>
   )
