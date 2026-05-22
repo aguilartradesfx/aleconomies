@@ -9,8 +9,8 @@ const steps = [
   {
     num: '1',
     title: 'Llamada de aclaración de servicio',
-    time: '15 min · Gratis',
-    desc: 'Conversamos para entender mejor su situación actual, sus objetivos y su perfil de riesgo. Se explica a profundidad cómo funciona el servicio de acompañamiento de inversiones. Si es lo que busca en este momento, se agenda el espacio de asesoría.',
+    time: '5–20 min · Gratis',
+    desc: 'Solo una conversación honesta para entender sus necesidades y que usted entienda mi servicio. Es veloz y al punto.',
   },
   {
     num: '2',

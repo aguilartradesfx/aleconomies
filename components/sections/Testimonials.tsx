@@ -5,27 +5,29 @@ import SectionEyebrow from '@/components/ui/SectionEyebrow'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
+// TODO: confirmar consentimiento por escrito de Gema Quesada, Yocer y Mónica Vargas
+// antes de pasar el sitio a producción. Ley 8968 (CR).
 const testimonials = [
   {
-    initials: 'MR',
-    name: 'María R.',
-    context: 'Empresaria · San José',
+    initials: 'GQ',
+    name: 'Gema Quesada',
+    context: '',
     quote:
-      '[Testimonio de María R. pendiente — debe enfocarse en la claridad y estructura que Alejandro aportó, no en rendimientos específicos. Texto sujeto a consentimiento explícito de la cliente.]',
+      'El servicio que brindan es de buena calidad. Siempre están atentos, dan seguimiento constante y se toman el tiempo de aclarar dudas. Valoro que informan con anticipación sobre cambios o actualizaciones que deba conocer.',
   },
   {
-    initials: 'JC',
-    name: 'Juan C.',
-    context: 'Ingeniero · Heredia',
+    initials: 'Y',
+    name: 'Yocer',
+    context: '',
     quote:
-      '[Testimonio de Juan C. pendiente — debe enfocarse en la experiencia del proceso, la transparencia y la paz mental obtenida. Texto sujeto a consentimiento explícito del cliente.]',
+      'Mi experiencia ha sido positiva, especialmente por la rapidez en la atención, la claridad durante el proceso de inversión y el seguimiento que he recibido por parte de la asesoría. Valoro mucho el trato personalizado y la disposición para resolver dudas. Agradezco la transparencia y el profesionalismo que han demostrado.',
   },
   {
-    initials: 'LM',
-    name: 'Laura M.',
-    context: 'Médica · Alajuela',
+    initials: 'MV',
+    name: 'Mónica Vargas',
+    context: '',
     quote:
-      '[Testimonio de Laura M. pendiente — debe enfocarse en cómo el plan se adaptó a su situación específica y lo que cambió en su relación con el dinero. Texto sujeto a consentimiento.]',
+      'Siempre he recibido un trato amable y profesional por parte de ustedes, con buen seguimiento y claridad en la información.',
   },
 ]
 
@@ -66,7 +68,7 @@ export default function Testimonials() {
                 </div>
                 <div>
                   <div className="testimonial-name">{name}</div>
-                  <div className="testimonial-context">{context}</div>
+                  {context && <div className="testimonial-context">{context}</div>}
                 </div>
               </div>
             </motion.div>

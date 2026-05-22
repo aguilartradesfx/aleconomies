@@ -38,8 +38,8 @@ export const PRODUCTS: Product[] = [
     },
     hasPeriodicIncome: false,
     presetAmounts: {
-      CRC: [500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000],
-      USD: [1_000, 2_500, 5_000, 10_000, 25_000],
+      CRC: [500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 20_000_000, 30_000_000, 40_000_000, 50_000_000, 100_000_000],
+      USD: [1_000, 2_500, 5_000, 10_000, 25_000, 40_000, 50_000, 75_000, 100_000, 150_000, 200_000],
     },
   },
   {
@@ -58,8 +58,8 @@ export const PRODUCTS: Product[] = [
     paymentFrequencies: ['monthly', 'quarterly', 'semiannual', 'annual'],
     hasPeriodicIncome: true,
     presetAmounts: {
-      CRC: [10_000_000, 25_000_000, 50_000_000, 100_000_000, 250_000_000],
-      USD: [20_000, 50_000, 100_000, 200_000, 500_000],
+      CRC: [10_000_000, 15_000_000, 20_000_000, 30_000_000, 40_000_000, 50_000_000, 100_000_000],
+      USD: [20_000, 30_000, 40_000, 50_000, 75_000, 100_000, 150_000, 200_000],
     },
   },
   {
@@ -242,6 +242,11 @@ export interface AssetAllocation {
   crypto: number      // Cripto
   cash: number        // Efectivo
   options: number     // Opciones
+  // TODO: pendiente matriz de asignación de Alejandro para Litigios, Aseguradoras, Offshore.
+  // Por ahora se incluyen como categorías visibles con 0% en todos los niveles.
+  litigation: number  // Litigios
+  insurers: number    // Aseguradoras
+  offshore: number    // Offshore
 }
 
 export interface RiskProfile {
@@ -252,14 +257,14 @@ export interface RiskProfile {
 }
 
 export const RISK_PROFILES: Record<number, RiskProfile> = {
-  1:  { name: 'ultra conservador',    return: '7-9%',   allocation: { stocks: 0,  bonds: 30, indexed: 0,  realEstate: 0,  crypto: 0,  cash: 70, options: 0  }, desc: 'Preservación absoluta del capital. Aceptación mínima de volatilidad.' },
-  2:  { name: 'conservador',          return: '8-11%',  allocation: { stocks: 0,  bonds: 50, indexed: 10, realEstate: 5,  crypto: 0,  cash: 35, options: 0  }, desc: 'Estabilidad sobre crecimiento. Para horizontes cortos o aversión clara al riesgo.' },
-  3:  { name: 'conservador moderado', return: '9-13%',  allocation: { stocks: 5,  bonds: 45, indexed: 20, realEstate: 10, crypto: 0,  cash: 20, options: 0  }, desc: 'Algo de crecimiento manteniendo bajo nivel de fluctuación.' },
-  4:  { name: 'moderado',             return: '11-16%', allocation: { stocks: 10, bonds: 35, indexed: 25, realEstate: 15, crypto: 2,  cash: 10, options: 3  }, desc: 'Crecimiento con protección. Para horizontes de 3-5 años.' },
-  5:  { name: 'balanceado',           return: '13-19%', allocation: { stocks: 15, bonds: 25, indexed: 30, realEstate: 15, crypto: 5,  cash: 5,  options: 5  }, desc: 'Equilibrio entre crecimiento y estabilidad. Apropiado para horizontes de 5+ años con tolerancia moderada a fluctuaciones.' },
-  6:  { name: 'balanceado activo',    return: '15-22%', allocation: { stocks: 20, bonds: 20, indexed: 30, realEstate: 15, crypto: 8,  cash: 2,  options: 5  }, desc: 'Crecimiento prioritario con red de seguridad en bonos.' },
-  7:  { name: 'crecimiento',          return: '17-25%', allocation: { stocks: 25, bonds: 12, indexed: 30, realEstate: 15, crypto: 10, cash: 0,  options: 8  }, desc: 'Construcción agresiva de patrimonio. Horizontes de 7+ años.' },
-  8:  { name: 'crecimiento alto',     return: '20-30%', allocation: { stocks: 30, bonds: 8,  indexed: 28, realEstate: 15, crypto: 12, cash: 0,  options: 7  }, desc: 'Mayor exposición al mercado. Tolerancia alta a fluctuaciones de corto plazo.' },
-  9:  { name: 'agresivo',             return: '25-35%', allocation: { stocks: 35, bonds: 3,  indexed: 25, realEstate: 12, crypto: 17, cash: 0,  options: 8  }, desc: 'Máximo crecimiento potencial. Solo recomendado con horizontes largos.' },
-  10: { name: 'ultra agresivo',       return: '30-40%', allocation: { stocks: 40, bonds: 0,  indexed: 20, realEstate: 10, crypto: 20, cash: 0,  options: 10 }, desc: 'Exposición casi total a renta variable. Requiere disciplina emocional alta.' },
+  1:  { name: 'ultra conservador',    return: '7-9%',   allocation: { stocks: 0,  bonds: 30, indexed: 0,  realEstate: 0,  crypto: 0,  cash: 70, options: 0,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Preservación absoluta del capital. Aceptación mínima de volatilidad.' },
+  2:  { name: 'conservador',          return: '8-11%',  allocation: { stocks: 0,  bonds: 50, indexed: 10, realEstate: 5,  crypto: 0,  cash: 35, options: 0,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Estabilidad sobre crecimiento. Para horizontes cortos o aversión clara al riesgo.' },
+  3:  { name: 'conservador moderado', return: '9-13%',  allocation: { stocks: 5,  bonds: 45, indexed: 20, realEstate: 10, crypto: 0,  cash: 20, options: 0,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Algo de crecimiento manteniendo bajo nivel de fluctuación.' },
+  4:  { name: 'moderado',             return: '11-16%', allocation: { stocks: 10, bonds: 35, indexed: 25, realEstate: 15, crypto: 2,  cash: 10, options: 3,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Crecimiento con protección. Para horizontes de 3-5 años.' },
+  5:  { name: 'balanceado',           return: '13-19%', allocation: { stocks: 15, bonds: 25, indexed: 30, realEstate: 15, crypto: 5,  cash: 5,  options: 5,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Equilibrio entre crecimiento y estabilidad. Apropiado para horizontes de 5+ años con tolerancia moderada a fluctuaciones.' },
+  6:  { name: 'balanceado activo',    return: '15-22%', allocation: { stocks: 20, bonds: 20, indexed: 30, realEstate: 15, crypto: 8,  cash: 2,  options: 5,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Crecimiento prioritario con red de seguridad en bonos.' },
+  7:  { name: 'crecimiento',          return: '17-25%', allocation: { stocks: 25, bonds: 12, indexed: 30, realEstate: 15, crypto: 10, cash: 0,  options: 8,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Construcción agresiva de patrimonio. Horizontes de 7+ años.' },
+  8:  { name: 'crecimiento alto',     return: '20-30%', allocation: { stocks: 30, bonds: 8,  indexed: 28, realEstate: 15, crypto: 12, cash: 0,  options: 7,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Mayor exposición al mercado. Tolerancia alta a fluctuaciones de corto plazo.' },
+  9:  { name: 'agresivo',             return: '25-35%', allocation: { stocks: 35, bonds: 3,  indexed: 25, realEstate: 12, crypto: 17, cash: 0,  options: 8,  litigation: 0, insurers: 0, offshore: 0 }, desc: 'Máximo crecimiento potencial. Solo recomendado con horizontes largos.' },
+  10: { name: 'ultra agresivo',       return: '30-40%', allocation: { stocks: 40, bonds: 0,  indexed: 20, realEstate: 10, crypto: 20, cash: 0,  options: 10, litigation: 0, insurers: 0, offshore: 0 }, desc: 'Exposición casi total a renta variable. Requiere disciplina emocional alta.' },
 }

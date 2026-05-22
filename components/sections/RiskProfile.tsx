@@ -20,6 +20,9 @@ const SEGMENTS = [
   { key: 'crypto',     label: 'Cripto',           color: 'var(--ink-400)'      },
   { key: 'cash',       label: 'Efectivo',         color: 'var(--ink-500)'      },
   { key: 'options',    label: 'Opciones',         color: 'var(--ink-600)'      },
+  { key: 'litigation', label: 'Litigios',         color: '#3A3A45'             },
+  { key: 'insurers',   label: 'Aseguradoras',     color: '#2E2E38'             },
+  { key: 'offshore',   label: 'Offshore',         color: '#252530'             },
 ] as const
 
 type SegmentKey = typeof SEGMENTS[number]['key']
@@ -44,6 +47,9 @@ export default function RiskProfile() {
   const lenCrypto     = useMotionValue(RISK_PROFILES[5].allocation.crypto     / 100 * CIRC)
   const lenCash       = useMotionValue(RISK_PROFILES[5].allocation.cash       / 100 * CIRC)
   const lenOptions    = useMotionValue(RISK_PROFILES[5].allocation.options    / 100 * CIRC)
+  const lenLitigation = useMotionValue(0)
+  const lenInsurers   = useMotionValue(0)
+  const lenOffshore   = useMotionValue(0)
 
   // Dasharray strings
   const dashStocks     = useTransform(lenStocks,     v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
@@ -53,6 +59,9 @@ export default function RiskProfile() {
   const dashCrypto     = useTransform(lenCrypto,     v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
   const dashCash       = useTransform(lenCash,       v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
   const dashOptions    = useTransform(lenOptions,    v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashLitigation = useTransform(lenLitigation, v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashInsurers   = useTransform(lenInsurers,   v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
+  const dashOffshore   = useTransform(lenOffshore,   v => `${v.toFixed(2)} ${CIRC.toFixed(2)}`)
 
   // Offsets — each segment starts after all previous ones
   const offStocks     = 0
@@ -62,6 +71,9 @@ export default function RiskProfile() {
   const offCrypto     = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate],        ([s, b, i, r]: number[])       => -(s + b + i + r))
   const offCash       = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto], ([s, b, i, r, c]: number[]) => -(s + b + i + r + c))
   const offOptions    = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash], ([s, b, i, r, c, ca]: number[]) => -(s + b + i + r + c + ca))
+  const offLitigation = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash, lenOptions], ([s, b, i, r, c, ca, o]: number[]) => -(s + b + i + r + c + ca + o))
+  const offInsurers   = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash, lenOptions, lenLitigation], ([s, b, i, r, c, ca, o, l]: number[]) => -(s + b + i + r + c + ca + o + l))
+  const offOffshore   = useTransform([lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash, lenOptions, lenLitigation, lenInsurers], ([s, b, i, r, c, ca, o, l, ins]: number[]) => -(s + b + i + r + c + ca + o + l + ins))
 
   const glowIntensity = 4 + level * 1.5
 
@@ -75,11 +87,14 @@ export default function RiskProfile() {
       [lenCrypto,     a.crypto     / 100 * CIRC],
       [lenCash,       a.cash       / 100 * CIRC],
       [lenOptions,    a.options    / 100 * CIRC],
+      [lenLitigation, a.litigation / 100 * CIRC],
+      [lenInsurers,   a.insurers   / 100 * CIRC],
+      [lenOffshore,   a.offshore   / 100 * CIRC],
     ]
     for (const [mv, target] of targets) {
       if (reduced) { mv.set(target) } else { animate(mv, target, SPRING) }
     }
-  }, [level, reduced, lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash, lenOptions])
+  }, [level, reduced, lenStocks, lenBonds, lenIndexed, lenRealEstate, lenCrypto, lenCash, lenOptions, lenLitigation, lenInsurers, lenOffshore])
 
   const alloc = profile.allocation
 
@@ -196,6 +211,21 @@ export default function RiskProfile() {
                   stroke="var(--ink-600)" strokeWidth={16}
                   strokeDasharray={dashOptions} strokeDashoffset={offOptions} strokeLinecap="butt"
                 />
+                {/* Litigios */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="#3A3A45" strokeWidth={16}
+                  strokeDasharray={dashLitigation} strokeDashoffset={offLitigation} strokeLinecap="butt"
+                />
+                {/* Aseguradoras */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="#2E2E38" strokeWidth={16}
+                  strokeDasharray={dashInsurers} strokeDashoffset={offInsurers} strokeLinecap="butt"
+                />
+                {/* Offshore */}
+                <motion.circle cx={100} cy={100} r={RADIUS} fill="none"
+                  stroke="#252530" strokeWidth={16}
+                  strokeDasharray={dashOffshore} strokeDashoffset={offOffshore} strokeLinecap="butt"
+                />
               </svg>
 
               {/* Center text */}
@@ -207,16 +237,19 @@ export default function RiskProfile() {
               </div>
             </div>
 
-            {/* Legend — only non-zero segments */}
+            {/* Legend — non-zero + always-visible pending categories */}
             <div className="risk-legend" aria-live="polite">
               {SEGMENTS.map(seg => {
                 const pct = alloc[seg.key as SegmentKey]
-                if (pct === 0) return null
+                const alwaysShow = seg.key === 'litigation' || seg.key === 'insurers' || seg.key === 'offshore'
+                if (pct === 0 && !alwaysShow) return null
                 return (
                   <div key={seg.key} className="risk-legend-item">
                     <div className="risk-legend-swatch" style={{ background: seg.color }} />
-                    <span>{seg.label}</span>
-                    <span className="risk-legend-pct">{pct}%</span>
+                    <span style={{ opacity: pct === 0 ? 0.4 : 1 }}>{seg.label}</span>
+                    <span className="risk-legend-pct" style={{ opacity: pct === 0 ? 0.4 : 1 }}>
+                      {pct === 0 ? 'Próx.' : `${pct}%`}
+                    </span>
                   </div>
                 )
               })}

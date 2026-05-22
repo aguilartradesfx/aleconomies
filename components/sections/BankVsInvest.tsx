@@ -30,7 +30,7 @@ export default function BankVsInvest() {
 
   const investData = useMemo(
     () =>
-      calculateCompoundGrowth(0, monthly, years, 9).map(d => ({
+      calculateCompoundGrowth(0, monthly, years, 12).map(d => ({
         year: d.year,
         value: d.balance,
       })),
@@ -177,7 +177,7 @@ export default function BankVsInvest() {
                   fontFamily: 'var(--font-mono)',
                 }}
               >
-                9% anual
+                12% anual
               </strong>
             </div>
             <div className="comparison-result comparison-result-highlight">
@@ -215,6 +215,11 @@ export default function BankVsInvest() {
             </ResponsiveContainer>
           </motion.div>
         </div>
+
+        {/* Disclaimer */}
+        <p style={{ fontSize: 11, color: 'var(--text-3)', textAlign: 'center', marginTop: 20, fontStyle: 'italic', lineHeight: 1.6 }}>
+          Tasas referenciales para fines comparativos. El rendimiento del banco corresponde a depósitos a plazo en colones de banca nacional. El portafolio diversificado representa una estrategia balanceada de mediano plazo y los rendimientos pasados no garantizan rendimientos futuros.
+        </p>
       </div>
     </section>
   )

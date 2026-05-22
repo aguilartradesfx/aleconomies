@@ -7,10 +7,11 @@ import SectionEyebrow from '@/components/ui/SectionEyebrow'
 const ease = [0.16, 1, 0.3, 1] as const
 
 const credentials = [
-  '[Credencial 1]',
-  '[Credencial 2]',
-  '[X] años de experiencia',
-  '[X] clientes activos',
+  'Especialidad en Finanzas — TEC',
+  'Profesor — TEC',
+  'Ejecutivo senior',
+  '6 años de experiencia',
+  '+1.250 clientes asesorados',
 ]
 
 export default function About() {
@@ -38,12 +39,20 @@ export default function About() {
 
             <div className="about-stats-badge">
               <div className="about-stat">
-                <span className="about-stat-value">[X]+</span>
+                <span className="about-stat-value">157</span>
                 Clientes activos
               </div>
               <div className="about-stat">
-                <span className="about-stat-value">[X]</span>
+                <span className="about-stat-value">+1.250</span>
+                Clientes asesorados
+              </div>
+              <div className="about-stat">
+                <span className="about-stat-value">6</span>
                 Años de experiencia
+              </div>
+              <div className="about-stat">
+                <span className="about-stat-value">$2M</span>
+                Activos bajo gestión
               </div>
             </div>
           </motion.div>
@@ -61,21 +70,31 @@ export default function About() {
             </h2>
 
             <p className="about-body about-body-first">
-              Salí de mis propias deudas hace [X] años. De ahí en adelante me obsesioné con
-              entender cómo funciona el dinero — no para hacerme millonario rápido, sino para
-              no volver a sentir esa angustia de no saber qué hacer con un sobre que llega del banco.
+              Nací en una familia donde la educación financiera no estuvo presente. A pesar de
+              estudiar en una buena universidad y cursar una carrera en finanzas, no sabía
+              administrarme personalmente. Esto me llevó a vivir más allá de mis capacidades y,
+              en cuestión de unos cuantos años, caer en punto de quiebra con una deuda superior
+              a los $50.000 a los 21 años.
             </p>
 
             <p className="about-body">
-              Estudié, me certifiqué en [credencial principal], y empecé a aplicar lo que aprendía
-              primero conmigo, luego con mi familia, después con amigos. Cuando vi que el patrón se
-              repetía — gente con ingresos buenos, sin un plan claro — supe que esto iba en serio.
+              Después de 3 años de trabajar mucho en mi persona y priorizar el desarrollo personal
+              para levantarme de ese abismo, logré salir de la situación. Sin dejar de lado la
+              ayuda de Dios.
             </p>
 
             <p className="about-body">
-              Hoy mi trabajo es darle a otros la claridad que a mí me hubiera ahorrado años de dar
-              vueltas. Sin paquetes enlatados, sin productos que me dejen comisión, sin promesas que
-              no pueda sostener.
+              Hoy enseño con el ejemplo cómo usted puede recuperarse de una situación similar y
+              cómo, por medio de las distintas opciones de inversión, puede llegar a multiplicar
+              su dinero con el debido tiempo y paciencia.
+            </p>
+
+            <p className="about-body">
+              No soy un asesor que solo le quiere colocar un producto por colocarlo. Creo
+              fielmente en el poder del acompañamiento personalizado. A partir del conocimiento
+              de sus objetivos y plazos, construyo un plan estratégico que impulsa a las personas
+              hacia rendimientos competitivos, superiores a los que el sistema bancario nacional
+              ofrece.
             </p>
 
             <div className="credentials-row">

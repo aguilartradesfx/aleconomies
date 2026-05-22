@@ -356,14 +356,11 @@ export default function CompoundCalculator() {
                   transition={{ duration: 0.2 }}
                 >
                   <div style={{ fontSize: 11, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 10 }}>
-                    Plazo
+                    {product.termUnit === 'months' ? 'Plazo en meses' : 'Plazo en años'}
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {product.terms.map(t => {
                       const isActive = state.term === t
-                      const label = product.termUnit === 'months'
-                        ? t < 12 ? `${t}m` : t % 12 === 0 ? `${t / 12}a` : `${t}m`
-                        : `${t}a`
                       return (
                         <button
                           key={t}
@@ -380,11 +377,22 @@ export default function CompoundCalculator() {
                             transition: 'all 0.15s',
                           }}
                         >
-                          {label}
+                          {t}
                         </button>
                       )
                     })}
                   </div>
+
+                  {/* Min helper — always visible */}
+                  <p style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 8 }}>
+                    Mínimo:{' '}
+                    {product.allowedCurrencies.includes('CRC') && product.minInvestment.CRC
+                      ? `₡${product.minInvestment.CRC.toLocaleString('es-CR')}`
+                      : ''}
+                    {product.allowedCurrencies.includes('CRC') && product.minInvestment.CRC && product.minInvestment.USD ? ' / ' : ''}
+                    {product.minInvestment.USD ? `$${product.minInvestment.USD.toLocaleString('en-US')}` : ''}
+                    {product.contributionMode === 'monthly' ? ' mensual' : ''}
+                  </p>
 
                   {/* Rate badge */}
                   <AnimatePresence>
@@ -523,6 +531,17 @@ export default function CompoundCalculator() {
                       Otro monto
                     </button>
                   </div>
+                  {/* Amount min helper — always visible */}
+                  <p style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 8 }}>
+                    Mínimo:{' '}
+                    {product.allowedCurrencies.includes('CRC') && product.minInvestment.CRC
+                      ? `₡${product.minInvestment.CRC.toLocaleString('es-CR')}`
+                      : ''}
+                    {product.allowedCurrencies.includes('CRC') && product.minInvestment.CRC && product.minInvestment.USD ? ' / ' : ''}
+                    {product.minInvestment.USD ? `$${product.minInvestment.USD.toLocaleString('en-US')}` : ''}
+                    {product.contributionMode === 'monthly' ? ' mensual' : ''}
+                  </p>
+
                   <AnimatePresence>
                     {state.selectedPresetIndex === null && (
                       <motion.div
