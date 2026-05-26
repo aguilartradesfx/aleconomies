@@ -9,8 +9,10 @@ const STORAGE_KEY = 'exit-modal-shown'
 export default function ExitIntentModal() {
   const [visible, setVisible] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
 
   useEffect(() => {
     if (sessionStorage.getItem(STORAGE_KEY)) return
@@ -49,11 +51,26 @@ export default function ExitIntentModal() {
     }
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: POST { name, email } to your CRM / email endpoint (e.g. ConvertKit, Mailchimp, n8n)
-    console.log('[exit-intent lead]', { name, email })
-    setSubmitted(true)
+    if (submitting) return
+    setSubmitting(true)
+    // Mostramos el éxito siempre (no bloqueamos UX si GHL falla); el server
+    // loguea cualquier error y queda en logs de Vercel.
+    try {
+      await fetch('/api/exit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone }),
+        keepalive: true,
+      })
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn('[exit-intent] error de red:', err)
+    } finally {
+      setSubmitted(true)
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -133,8 +150,23 @@ export default function ExitIntentModal() {
                       required
                       autoComplete="email"
                     />
-                    <button type="submit" className="exit-modal-submit">
-                      Recibir la guía gratis →
+                    <input
+                      className="exit-modal-input"
+                      type="tel"
+                      placeholder="Su número de teléfono"
+                      value={phone}
+                      onChange={e => setPhone(e.target.value)}
+                      required
+                      autoComplete="tel"
+                      inputMode="tel"
+                    />
+                    <button
+                      type="submit"
+                      className="exit-modal-submit"
+                      disabled={submitting}
+                      aria-busy={submitting}
+                    >
+                      {submitting ? 'Enviando…' : 'Recibir la guía gratis →'}
                     </button>
                   </form>
 

@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALECONOMIES · El dinero dormido</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   ALECONOMIES · Brand Design System
+   Shared across all 11 lead-magnet pieces.
+   Dual-mode: web viewer (scrolling) + print (A4 paginated PDF).
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
+
+:root {
+  --bg-base: #0E1218;
+  --bg-deep: #090C11;
+  --bg-mid:  #141923;
+  --bg-elevated: #1A1F2A;
+
+  --ink-50:  #FAFAFA;
+  --ink-100: #F2F2F4;
+  --ink-200: #E0E0E5;
+  --ink-300: #BDBDC5;
+  --ink-400: #8E8E9C;
+  --ink-500: #6B6B78;
+  --ink-600: #4A4A55;
+  --ink-700: #2D2D38;
+  --ink-800: #1E1E26;
+
+  --text:    #ECECEF;
+  --text-2:  rgba(236, 236, 239, 0.78);
+  --text-3:  rgba(236, 236, 239, 0.52);
+  --text-4:  rgba(236, 236, 239, 0.34);
+
+  --purple: #8B5CF6;
+  --purple-light: #A78BFA;
+  --purple-bright: #C4B5FD;
+  --purple-glow: rgba(139, 92, 246, 0.4);
+  --purple-faint: rgba(139, 92, 246, 0.1);
+
+  --red: #EF4444;
+  --amber: #F59E0B;
+  --green: #10B981;
+
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  --sans: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+@page { size: A4; margin: 0; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ───────── EM (italic) — solid color to avoid Chromium print bleed ───────── */
+em {
+  text-decoration: none !important;
+  font-style: italic;
+}
+.display em, .cover-h em, .quote-card .quote em, .bridge-line em,
+.cta-headline em, .closing-tag em,
+.italic-accent, .preview-value em, .cta-meta-value em,
+.mito-text em, .myth-title em, .mes-title em {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  color: var(--purple-light) !important;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ═════════════════ SCREEN VIEWER MODE ═════════════════
+   Pages are shown as floating sheets on a dark backdrop.
+   A sticky toolbar holds the download button.
+*/
+@media screen {
+  body {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(60, 72, 95, 0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(40, 50, 70, 0.25) 0%, transparent 60%),
+      var(--bg-deep);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 80px 16px 60px;
+  }
+
+  .pages-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .page {
+    flex-shrink: 0;
+    width: 210mm;
+    height: 297mm;
+    background: var(--bg-base);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 32px 80px rgba(0, 0, 0, 0.6),
+      0 8px 24px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transform-origin: top center;
+  }
+
+  /* Mobile/tablet: scale pages down to fit viewport */
+  @media (max-width: 880px) {
+    body { padding: 64px 0 40px; }
+    .pages-wrap { gap: 16px; }
+    .page {
+      transform: scale(calc((100vw - 0px) / 794));
+      margin-bottom: calc((100vw - 794px) * 297 / 210);
+    }
+  }
+
+  /* ───────── TOOLBAR / DOWNLOAD BUTTON ───────── */
+  .toolbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 8px 8px 18px;
+    background: rgba(20, 25, 35, 0.78);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid var(--border-medium);
+    border-radius: 100px;
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 1px rgba(0, 0, 0, 0.4),
+      0 12px 40px rgba(0, 0, 0, 0.5);
+    max-width: calc(100vw - 32px);
+  }
+  .toolbar-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--text);
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .toolbar-title::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--purple);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--purple-glow);
+    flex-shrink: 0;
+  }
+  .toolbar-sep {
+    width: 1px;
+    height: 18px;
+    background: var(--border-medium);
+    margin: 0 4px;
+  }
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    background: var(--text);
+    color: var(--bg-deep);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .dl-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.18);
+  }
+  .dl-btn svg { width: 14px; height: 14px; }
+
+  @media (max-width: 600px) {
+    .toolbar { padding: 6px 6px 6px 14px; gap: 6px; }
+    .toolbar-title { font-size: 11px; }
+    .toolbar-title-text { display: none; }
+    .toolbar-sep { display: none; }
+    .dl-btn { padding: 8px 14px; font-size: 12px; }
+  }
+}
+
+/* ═════════════════ PRINT MODE ═════════════════
+   Hide toolbar, restore proper page breaks, no margins.
+*/
+@media print {
+  .toolbar { display: none !important; }
+  body { background: var(--bg-base); padding: 0; }
+  .pages-wrap { display: block; }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    page-break-after: always;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    transform: none !important;
+  }
+  .page:last-child { page-break-after: auto; }
+}
+
+/* ═════════════════ PAGE INTERNALS ═════════════════ */
+.page { position: relative; background: var(--bg-base); }
+
+/* Background mesh + blobs */
+.bg-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65% 50% at 50% 0%, rgba(60, 72, 95, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 100% 50%, rgba(45, 55, 75, 0.5) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(40, 50, 70, 0.45) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 0% 60%, rgba(50, 60, 80, 0.4) 0%, transparent 55%);
+}
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(50px);
+}
+.bg-blob-1 {
+  width: 280px; height: 280px;
+  top: -8%; left: 8%;
+  background: radial-gradient(circle, rgba(80, 95, 120, 0.55) 0%, rgba(60, 72, 95, 0.2) 50%, transparent 70%);
+  opacity: 0.7;
+}
+.bg-blob-2 {
+  width: 260px; height: 260px;
+  top: 35%; right: -10%;
+  background: radial-gradient(circle, rgba(70, 82, 105, 0.55) 0%, rgba(50, 60, 80, 0.2) 50%, transparent 70%);
+  opacity: 0.55;
+}
+.bg-blob-3 {
+  width: 320px; height: 320px;
+  bottom: -8%; left: 30%;
+  background: radial-gradient(circle, rgba(60, 72, 95, 0.5) 0%, rgba(45, 55, 75, 0.2) 50%, transparent 70%);
+  opacity: 0.5;
+}
+.bg-blob-purple {
+  width: 220px; height: 220px;
+  top: 50%; left: -8%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.28) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%);
+  opacity: 0.4;
+}
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 22mm 20mm;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ───────── EYEBROW BADGE ───────── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 13px 6px 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  border-radius: 100px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 500;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* ───────── DISPLAY TYPE ───────── */
+.display {
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -2.5px;
+  line-height: 0.98;
+}
+.h1 { font-size: 72pt; letter-spacing: -3px; }
+.h2 { font-size: 42pt; letter-spacing: -2px; }
+.h3 { font-size: 28pt; letter-spacing: -1.2px; }
+
+/* ───────── LEAD / BODY ───────── */
+.lead {
+  font-size: 13pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.body {
+  font-size: 11pt;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.body p + p { margin-top: 12px; }
+.body strong { color: var(--text); font-weight: 600; }
+
+.italic-accent { font-family: var(--serif); font-style: italic; color: var(--purple-light); }
+
+/* ───────── GLASS CARD ───────── */
+.card {
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 12px 36px rgba(0, 0, 0, 0.35);
+}
+.card.featured {
+  border-color: var(--border-strong);
+  position: relative;
+}
+.card.featured::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 24px; right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* ───────── LOGO ───────── */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13pt;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+.logo-mark {
+  width: 22px; height: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.logo-mark::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1.4px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2.5px;
+  transform: rotate(45deg);
+}
+.logo-mark::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 5px; height: 5px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* ───────── PAGE FOOTER ───────── */
+.page-footer {
+  margin-top: auto;
+  padding-top: 12mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--text-4);
+  letter-spacing: 0.5px;
+}
+.page-footer .meta { text-transform: uppercase; letter-spacing: 1px; }
+
+/* ───────── COVER COMPONENTS ───────── */
+.cover .content { justify-content: space-between; padding: 22mm 20mm; }
+.cover-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cover-h {
+  font-size: 96pt;
+  line-height: 0.92;
+  letter-spacing: -4px;
+  font-weight: 500;
+  color: var(--text);
+}
+.cover-h em {
+  letter-spacing: -3.5px;
+  line-height: 0.92;
+}
+.cover-sub {
+  margin-top: 18px;
+  font-size: 14pt;
+  color: var(--text-2);
+  line-height: 1.5;
+  max-width: 130mm;
+}
+.cover-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+.cover-bottom-meta {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--text-4);
+  letter-spacing: 0.5px;
+  line-height: 1.7;
+}
+.cover-bottom-meta strong {
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+/* Cover preview floating card */
+.cover-preview {
+  margin-top: 12mm;
+  padding: 22px 24px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 24px 48px rgba(0, 0, 0, 0.4);
+  max-width: 110mm;
+  align-self: flex-start;
+}
+.preview-label {
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.preview-label::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.preview-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+.preview-value {
+  font-family: var(--sans);
+  font-size: 32pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -1.2px;
+  line-height: 1;
+}
+.preview-caption {
+  margin-top: 12px;
+  font-size: 9.5pt;
+  color: var(--text-3);
+}
+
+/* ───────── SECTION HEADER ───────── */
+.section-header { margin-bottom: 14mm; }
+.section-header .eyebrow { margin-bottom: 18px; }
+
+/* ───────── QUOTE CARD ───────── */
+.quote-card {
+  margin-top: 10mm;
+  padding: 28px 32px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  border-left: 2px solid var(--purple);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 12px 36px rgba(0, 0, 0, 0.3);
+}
+.quote-card .quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18pt;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -0.5px;
+  font-weight: 400;
+}
+
+/* ───────── FOOTNOTE ───────── */
+.footnote {
+  margin-top: auto;
+  padding-top: 10px;
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--text-4);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  border-top: 1px solid var(--border-soft);
+}
+.footnote strong { color: var(--text-2); font-weight: 500; }
+
+/* ───────── DATA TABLE ───────── */
+.table-card {
+  margin-top: 8mm;
+  padding: 26px 28px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 12px 36px rgba(0, 0, 0, 0.3);
+}
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left;
+  font-size: 9pt;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.data-table th.highlight { color: var(--purple-light); }
+.data-table td {
+  font-family: var(--mono);
+  font-size: 12pt;
+  color: var(--text);
+  font-weight: 500;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-soft);
+  letter-spacing: -0.3px;
+}
+.data-table td:first-child {
+  color: var(--text-2);
+  font-size: 11pt;
+  font-weight: 400;
+  font-family: var(--sans);
+}
+.data-table td.dim { color: var(--text-3); }
+.data-table td.highlight { color: var(--purple-light); font-weight: 500; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr.featured td { background: rgba(139, 92, 246, 0.05); }
+.data-table tr.featured td:first-child { color: var(--text); font-weight: 500; }
+
+/* ───────── HERO NUMBER ───────── */
+.hero-number-block {
+  margin-top: 9mm;
+  text-align: center;
+  padding: 22px 0 4px 0;
+}
+.hero-number-label {
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.hero-number {
+  font-family: var(--sans);
+  font-size: 84pt;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -4px;
+  background: linear-gradient(135deg, var(--purple-bright) 0%, var(--purple-light) 50%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(139, 92, 246, 0.25));
+}
+.hero-number-caption {
+  margin-top: 14px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14pt;
+  color: var(--text-2);
+  letter-spacing: -0.3px;
+}
+.hero-number-caption strong { color: var(--text); font-weight: 500; }
+
+/* ───────── BRIDGE LINE ───────── */
+.bridge-line {
+  margin-top: 10mm;
+  padding: 0 4mm;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14pt;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ───────── STEP CARDS (numbered list) ───────── */
+.steps {
+  margin-top: 6mm;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.step-card {
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 8px 24px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 20px;
+  align-items: flex-start;
+}
+.step-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 36pt;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.step-title {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.step-desc {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* ───────── CTA BLOCK ───────── */
+.cta-block { margin-top: auto; margin-bottom: auto; text-align: center; }
+.cta-headline {
+  font-size: 38pt;
+  line-height: 1.05;
+  letter-spacing: -1.8px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 18px;
+  max-width: 160mm;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-sub {
+  font-size: 13pt;
+  color: var(--text-2);
+  max-width: 140mm;
+  margin: 0 auto 12mm;
+  line-height: 1.55;
+}
+.cta-card {
+  padding: 32px 36px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 22px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 24px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  max-width: 160mm;
+  margin: 0 auto;
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 32px; right: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 10px var(--purple-glow);
+}
+.cta-card-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.cta-meta { text-align: center; }
+.cta-meta-label {
+  font-size: 9pt;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.cta-meta-value {
+  font-family: var(--sans);
+  font-size: 16pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.4px;
+}
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: var(--text);
+  color: var(--bg-deep);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13pt;
+  border-radius: 100px;
+  border: none;
+  margin: 0 auto;
+}
+.cta-channels {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-soft);
+}
+.channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
+}
+.channel-dot {
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+
+/* ───────── CLOSING / DISCLAIMER ───────── */
+.closing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.closing-logo { margin-bottom: 28px; }
+.closing-logo .logo { font-size: 24pt; gap: 14px; }
+.closing-logo .logo-mark {
+  width: 38px; height: 38px;
+  border-radius: 9px;
+}
+.closing-logo .logo-mark::before { inset: 7px; border-radius: 4px; }
+.closing-logo .logo-mark::after { width: 8px; height: 8px; }
+.closing-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16pt;
+  color: var(--text-2);
+  margin-bottom: 14mm;
+  max-width: 140mm;
+  line-height: 1.45;
+}
+.disclaimer {
+  max-width: 145mm;
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.4);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  line-height: 1.65;
+  color: var(--text-3);
+  text-align: left;
+  letter-spacing: 0.1px;
+}
+.disclaimer strong { color: var(--text-2); font-weight: 500; }
+.closing-contact {
+  margin-top: 12mm;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--text-4);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+.closing-contact strong { color: var(--text-2); }
+
+/* ═════════════════ PIEZA-SPECIFIC COMPONENTS ═════════════════ */
+
+/* ───────── MENTIRA BLOCK (Pieza 2) ───────── */
+.mentira { display: flex; flex-direction: column; gap: 12mm; }
+.mentira-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 96pt;
+  line-height: 0.85;
+  letter-spacing: -5px;
+  background: linear-gradient(135deg, var(--purple-bright) 0%, var(--purple-light) 60%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.25));
+  font-weight: 400;
+}
+.mito-label {
+  font-size: 9pt;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.mito-text {
+  font-size: 26pt;
+  font-weight: 500;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  color: var(--text);
+}
+.myth-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.myth-block {
+  padding: 18px 22px;
+  background: rgba(20, 25, 35, 0.45);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+}
+.myth-block.realidad {
+  border-color: rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.04);
+}
+.myth-block-label {
+  font-size: 9pt;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.myth-block.realidad .myth-block-label { color: var(--purple-light); }
+.myth-block-label::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--text-3);
+  border-radius: 50%;
+}
+.myth-block.realidad .myth-block-label::before {
+  background: var(--purple);
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.myth-block-text {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.myth-block-text strong { color: var(--text); font-weight: 600; }
+.myth-action {
+  margin-top: 8mm;
+  padding: 16px 22px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-soft);
+  border-left: 2px solid var(--purple);
+  border-radius: 12px;
+}
+.myth-action-label {
+  font-size: 9pt;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.myth-action-text {
+  font-size: 11pt;
+  color: var(--text);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+/* ───────── SEMAFORO (Pieza 3) ───────── */
+.semaforo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8mm;
+}
+.semaforo-row {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 22px;
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  align-items: center;
+}
+.semaforo-light {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  position: relative;
+}
+.semaforo-light.green {
+  background: radial-gradient(circle, var(--green) 0%, rgba(16, 185, 129, 0.4) 70%);
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.5), inset 0 1px 4px rgba(255,255,255,0.3);
+}
+.semaforo-light.amber {
+  background: radial-gradient(circle, var(--amber) 0%, rgba(245, 158, 11, 0.4) 70%);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.5), inset 0 1px 4px rgba(255,255,255,0.3);
+}
+.semaforo-light.red {
+  background: radial-gradient(circle, var(--red) 0%, rgba(239, 68, 68, 0.4) 70%);
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.5), inset 0 1px 4px rgba(255,255,255,0.3);
+}
+.semaforo-title {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.semaforo-title strong { font-weight: 600; }
+.semaforo-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* Yes/No question block (Pieza 3) */
+.q-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6mm;
+}
+.q-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 100px;
+  gap: 14px;
+  padding: 16px 20px;
+  background: rgba(20, 25, 35, 0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  align-items: center;
+}
+.q-num {
+  font-family: var(--mono);
+  font-size: 13pt;
+  color: var(--purple-light);
+  font-weight: 500;
+}
+.q-text {
+  font-size: 10.5pt;
+  color: var(--text);
+  line-height: 1.5;
+}
+.q-yn {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.q-yn span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 10pt;
+  color: var(--text-3);
+  letter-spacing: 0.5px;
+}
+
+/* ───────── INSTRUMENT FICHA (Pieza 4) ───────── */
+.ficha {
+  padding: 18px 22px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: flex-start;
+}
+.ficha-name {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.ficha-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.ficha-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  text-align: right;
+}
+.ficha-risk {
+  display: flex;
+  gap: 3px;
+}
+.ficha-risk-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.ficha-risk-dot.on {
+  background: var(--purple);
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.ficha-horizonte {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  color: var(--text-3);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* ───────── PROFILE / RISK CARDS (Pieza 6) ───────── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 6mm;
+}
+.profile-card {
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 22px;
+  align-items: center;
+}
+.profile-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.profile-meter-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.profile-meter-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--purple), var(--purple-light));
+  border-radius: 100px;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.profile-name {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.profile-points {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--purple-light);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.profile-desc {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* Risk pictogram (icon) */
+.profile-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.profile-icon::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.profile-icon svg { width: 24px; height: 24px; color: var(--text); }
+
+/* ───────── ALERT FLAG (Pieza 7) ───────── */
+.flag-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6mm;
+}
+.flag-card {
+  padding: 16px 18px;
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-radius: 12px;
+}
+.flag-num {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--red);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.flag-num::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+}
+.flag-text {
+  font-size: 10pt;
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.flag-text strong { font-weight: 600; }
+
+/* ───────── TIMELINE (Pieza 9) ───────── */
+.mes-card {
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 22px;
+  align-items: flex-start;
+}
+.mes-card.featured {
+  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.04);
+}
+.mes-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16pt;
+  color: var(--purple-light);
+  letter-spacing: 0;
+  font-weight: 400;
+  line-height: 1;
+}
+.mes-num strong {
+  display: block;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 36pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -1.5px;
+  line-height: 1;
+  margin-top: 4px;
+}
+.mes-title {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.mes-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* ───────── CHECKLIST (Pieza 11) ───────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8mm;
+}
+.checklist-group-label {
+  font-size: 9pt;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.checklist-group-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-medium), transparent);
+}
+.checklist-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.check-row {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 14px;
+  padding: 12px 18px;
+  background: rgba(20, 25, 35, 0.4);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  align-items: center;
+}
+.check-box {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.check-text {
+  font-size: 10.5pt;
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.check-num {
+  font-family: var(--mono);
+  color: var(--purple-light);
+  font-weight: 500;
+  margin-right: 6px;
+}
+
+/* ───────── HISTORIA / NARRATIVE (Pieza 12) ───────── */
+.historia-card {
+  padding: 28px 32px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  margin-top: 8mm;
+  position: relative;
+}
+.historia-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 32px; right: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.historia-name {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22pt;
+  color: var(--text);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.historia-name em { color: var(--purple-light); }
+.historia-subtitle {
+  font-size: 11pt;
+  color: var(--text-3);
+  font-style: italic;
+  margin-bottom: 18px;
+}
+.historia-body {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.historia-body p + p { margin-top: 10px; }
+.historia-body strong { color: var(--text); font-weight: 600; }
+.historia-quote {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-left: 2px solid var(--purple);
+  background: rgba(139, 92, 246, 0.04);
+  border-radius: 0 10px 10px 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12pt;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* ───────── COMPARISON CARDS (mirror) ───────── */
+.comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8mm;
+}
+.comp-mirror {
+  padding: 22px 24px;
+  background: rgba(20, 25, 35, 0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+}
+.comp-mirror-label {
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.comp-mirror-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.comp-mirror-text {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.comp-mirror-text strong { color: var(--text); font-weight: 600; }
+
+/* ───────── REPARTO SEGMENTS (Pieza 10) ───────── */
+.reparto {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 8mm;
+}
+.reparto-seg {
+  padding: 22px 24px;
+  background: rgba(20, 25, 35, 0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.reparto-seg.crecer {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.06);
+}
+.reparto-seg.crecer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 16px; right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.reparto-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18pt;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 8px;
+}
+.reparto-seg.crecer .reparto-label { color: var(--purple-light); }
+.reparto-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ───────── SECTION TITLE WITHIN A PAGE ───────── */
+.subhead {
+  font-size: 18pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.8px;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+
+/* === Fix responsive (added post-handoff): prevenir overflow horizontal del wrapper en mobile.
+   El .page usa width:210mm con transform:scale en mobile, lo cual escala visualmente
+   pero el elemento sigue reservando espacio en el layout. Esto recorta el desbordamiento
+   sin tocar contenido, cifras ni compliance. === */
+html, body { overflow-x: clip; }
+@media (max-width: 880px) {
+  body { padding-left: 0; padding-right: 0; }
+  .pages-wrap { width: 100%; max-width: 100vw; overflow-x: hidden; }
+  .page { transform-origin: top left !important; margin-left: 0 !important; margin-right: 0 !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-title"><span class="toolbar-title-text">El dinero dormido</span></div>
+  <div class="toolbar-sep"></div>
+  <a href="pieza-1-dinero-dormido.pdf" download="ALECONOMIES - El dinero dormido.pdf" class="dl-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Descargar PDF
+  </a>
+</div>
+
+<div class="pages-wrap">
+
+<!-- PAGE 1 — COVER -->
+<div class="page cover">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="cover-top">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>Ebook · Finanzas personales</div>
+      <div class="logo"><div class="logo-mark"></div>ALECONOMIES</div>
+    </div>
+    <div style="margin-top: 24mm;">
+      <h1 class="cover-h">El dinero<br><em>dormido.</em></h1>
+      <p class="cover-sub">Tu plata está cómoda en el banco. Demasiado cómoda. Te mostramos, con números reales de Costa Rica, cuánto te cuesta dejarla dormir.</p>
+      <div class="cover-preview">
+        <div class="preview-label">Tu millón en 10 años</div>
+        <div class="preview-row">
+          <div class="preview-value">+₡862.529<sup style="font-size: 14pt; color: var(--purple-light); font-style: italic; font-family: var(--serif); font-weight: 400;">*</sup></div>
+          <svg style="flex:1; height:44px;" viewBox="0 0 200 50" preserveAspectRatio="none">
+            <defs><linearGradient id="cs1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A78BFA" stop-opacity="0.4"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,42 L20,40 L40,38 L60,35 L80,30 L100,25 L120,19 L140,14 L160,10 L180,6 L200,3 L200,50 L0,50 Z" fill="url(#cs1)"/>
+            <path d="M0,42 L20,40 L40,38 L60,35 L80,30 L100,25 L120,19 L140,14 L160,10 L180,6 L200,3" stroke="#A78BFA" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(139,92,246,0.6))"/>
+          </svg>
+        </div>
+        <div class="preview-caption">Lo que dejás de ganar dejando ₡1.000.000 dormido al 1% en vez de despierto al 7%.</div>
+      </div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-bottom-meta"><strong>ALECONOMIES · Servicios de Inversión</strong><br>Asesoría regulada · Costa Rica · 2026</div>
+      <div class="cover-bottom-meta" style="text-align: right;"><strong>01 / 08</strong><br>Pieza educativa</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 — LA TRAMPA -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>01 · La trampa de la comodidad</div></div>
+    <h2 class="display h2" style="margin-bottom: 28px;">"Mi plata está segura en el banco."<br><em>¿Segura de qué?</em></h2>
+    <div class="body" style="max-width: 155mm;">
+      <p>Abrís la app del banco y ahí está: el mismo número de siempre. Un millón de colones, completitos. Y como Costa Rica vive un momento raro —los precios incluso han venido bajando— sentís que no hay apuro. Total, tu plata no se está "perdiendo", ¿verdad?</p>
+      <p>Acá está el truco que casi nadie ve: que tu dinero no pierda valor de golpe no significa que esté creciendo. Significa que está <strong>dormido</strong>. Y mientras duerme, deja de hacer la única cosa para la que sirve a largo plazo: multiplicarse.</p>
+    </div>
+    <div class="quote-card"><div class="quote">El verdadero costo no es lo que <em>perdés.</em><br>Es todo lo que dejás de <em>ganar.</em></div></div>
+    <div class="page-footer"><span class="meta">El dinero dormido</span><span>02 / 08</span></div>
+  </div>
+</div>
+
+<!-- PAGE 3 — ÁNGULO EXPERTO -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>02 · El ángulo experto</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 165mm;">Quizás escuchaste que los precios están bajando. <em>Es cierto, pero…</em></h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>Sí, Costa Rica atraviesa un periodo de precios a la baja. Suena bien para tu bolsillo del día a día. Pero hay una consecuencia que pocos te explican: <strong>cuando la economía se enfría, el Banco Central baja las tasas de interés</strong>, y eso golpea directo lo que te pagan por tu plata.</p>
+      <p>Un ahorro o un certificado a plazo en el banco hoy te paga poco, y esa cifra ha venido cayendo con las tasas. Tu dinero "seguro" rinde cada vez menos. Y ojo con un detalle fino: cuando las tasas suben, los bancos tardan en pasártelo a tu ahorro; cuando bajan, lo aplican rapidito.</p>
+      <p style="color: var(--text); font-weight: 400;">No es que tu plata esté en peligro. <span class="italic-accent">Es que está rindiendo menos de lo que creés,</span> en el peor momento para darte cuenta.</p>
+    </div>
+    <div style="margin-top: 8mm; padding: 24px 26px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-soft); border-radius: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px;">
+        <span style="font-size: 10pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3);">Tasa de política monetaria · BCCR</span>
+        <span style="font-family: var(--mono); font-size: 8.5pt; color: var(--text-4);">Fuente: bccr.fi.cr · ilustrativo</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-family: var(--mono); font-size: 8pt; color: var(--text-4);"><span>9,00%</span><span>5,75%</span><span>3,25%</span></div>
+      <svg viewBox="0 0 500 90" preserveAspectRatio="none" style="width: 100%; height: 90px;">
+        <defs><linearGradient id="ra" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A78BFA" stop-opacity="0.35"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></linearGradient></defs>
+        <line x1="0" y1="20" x2="500" y2="20" stroke="rgba(255,255,255,0.06)"/><line x1="0" y1="50" x2="500" y2="50" stroke="rgba(255,255,255,0.06)"/><line x1="0" y1="80" x2="500" y2="80" stroke="rgba(255,255,255,0.06)"/>
+        <path d="M0,12 L50,15 L100,20 L150,25 L200,30 L250,38 L300,48 L350,58 L400,68 L450,75 L500,82 L500,90 L0,90 Z" fill="url(#ra)"/>
+        <path d="M0,12 L50,15 L100,20 L150,25 L200,30 L250,38 L300,48 L350,58 L400,68 L450,75 L500,82" stroke="#A78BFA" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(139,92,246,0.5))"/>
+        <circle cx="500" cy="82" r="4" fill="#C4B5FD" style="filter: drop-shadow(0 0 6px rgba(139,92,246,0.8))"/>
+      </svg>
+      <div style="display: flex; justify-content: space-between; margin-top: 8px; font-family: var(--mono); font-size: 8pt; color: var(--text-3);"><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span style="color: var(--purple-light)">2026</span></div>
+    </div>
+    <div class="footnote" style="margin-top: 8mm;"><strong>Nota.</strong> Tendencia descendente de la TPM del BCCR. Valor de cierre 2025 alrededor de <strong>3,25%</strong>. La Tasa Básica Pasiva rondaba <strong>3,78%</strong>. Verificar cifras vigentes en bccr.fi.cr antes de tomar decisiones. No se proyecta dirección futura: se describe la tendencia reciente.</div>
+  </div>
+</div>
+
+<!-- PAGE 4 — LA TABLA -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>03 · El costo de oportunidad</div></div>
+    <h2 class="display h2" style="margin-bottom: 16px; max-width: 170mm;">Lo que tu millón hace dormido <em>vs. despierto.</em></h2>
+    <p class="body" style="max-width: 158mm;">El mismo millón de colones durante 10 años. A la izquierda, <strong>dormido</strong> en una cuenta que casi no paga (1% anual). A la derecha, <strong>despierto:</strong> creciendo de forma compuesta al 7% anual.</p>
+    <div class="table-card">
+      <table class="data-table">
+        <thead><tr><th>Año</th><th>Dormido <span style="color: var(--text-4); font-weight: 400; text-transform: none; letter-spacing: 0;">(al 1%)</span></th><th>Despierto <span style="color: var(--text-4); font-weight: 400; text-transform: none; letter-spacing: 0;">(al 7%)</span></th><th class="highlight">Lo que dejaste de ganar</th></tr></thead>
+        <tbody>
+          <tr><td>Hoy</td><td class="dim">₡1.000.000</td><td class="dim">₡1.000.000</td><td class="dim">₡0</td></tr>
+          <tr><td>3 años</td><td>₡1.030.301</td><td>₡1.225.043</td><td class="highlight">₡194.742</td></tr>
+          <tr><td>5 años</td><td>₡1.051.010</td><td>₡1.402.552</td><td class="highlight">₡351.542</td></tr>
+          <tr class="featured"><td>10 años</td><td>₡1.104.622</td><td>₡1.967.151</td><td class="highlight">₡862.529</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="hero-number-block">
+      <div class="hero-number-label">En 10 años podrías estar dejando</div>
+      <div class="hero-number">₡862.529</div>
+      <div class="hero-number-caption">Casi otro millón. <strong>Ese es el precio de la comodidad.</strong></div>
+    </div>
+    <div class="footnote" style="margin-top: 8mm;"><strong>Ejemplo ilustrativo</strong> con tasas supuestas (1% y 7% anual). No representa una proyección ni un rendimiento garantizado de ningún producto. Toda inversión implica riesgo. Cálculo: capital × (1+tasa)^años.</div>
+  </div>
+</div>
+
+<!-- PAGE 5 — INTERÉS COMPUESTO -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>04 · El motor</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 165mm;">El secreto se llama <em>interés compuesto.</em></h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>La diferencia de la página anterior no es magia: es interés compuesto. Tu dinero genera rendimiento, y ese rendimiento genera su propio rendimiento, y así sucesivamente. Es una bola de nieve que se hace más grande mientras más rueda.</p>
+      <p>Y acá está lo más importante: <strong>el factor número uno no es cuánta plata metés, es cuánto tiempo la dejás crecer.</strong> Por eso el peor momento para empezar fue ayer, y el segundo peor momento es seguir esperando.</p>
+    </div>
+    <div class="card featured" style="margin-top: 8mm; padding: 26px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px;">
+        <span style="font-size: 9pt; letter-spacing: 1.5px; text-transform: uppercase; color: var(--purple-light); font-weight: 500;">La regla del 72</span>
+        <span style="font-family: var(--mono); font-size: 11pt; color: var(--text); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-medium); border-radius: 8px; padding: 5px 10px;">72 ÷ tasa = años para duplicar</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div style="padding: 18px 20px; background: rgba(139, 92, 246, 0.06); border: 1px solid rgba(139, 92, 246, 0.22); border-radius: 12px;">
+          <div style="font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;">Despierto · al 7%</div>
+          <div style="font-family: var(--sans); font-size: 30pt; font-weight: 500; color: var(--text); letter-spacing: -1.2px; line-height: 1; background: linear-gradient(135deg, var(--purple-bright), var(--purple-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">10 años</div>
+          <div style="margin-top: 8px; font-size: 9.5pt; color: var(--text-3);">para que tu dinero se duplique</div>
+        </div>
+        <div style="padding: 18px 20px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-soft); border-radius: 12px;">
+          <div style="font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;">Dormido · al 1%</div>
+          <div style="font-family: var(--sans); font-size: 30pt; font-weight: 500; color: var(--text); letter-spacing: -1.2px; line-height: 1;">72 años</div>
+          <div style="margin-top: 8px; font-size: 9.5pt; color: var(--text-3);">para el mismo resultado</div>
+        </div>
+      </div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">No necesitás <em>más plata</em> para empezar.<br>Necesitás <em>más tiempo</em> trabajando para vos.</p>
+    <div class="page-footer"><span class="meta">El dinero dormido</span><span>05 / 08</span></div>
+  </div>
+</div>
+
+<!-- PAGE 6 — 3 PASOS -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>05 · Qué podés hacer</div></div>
+    <h2 class="display h2" style="margin-bottom: 6mm;">3 pasos para despertar <em>tu dinero.</em></h2>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Separá el colchón del motor.</div>
+          <div class="step-desc">Una parte de tu plata debe quedarse líquida y disponible para emergencias: <strong style="color: var(--text);">ese es tu colchón</strong>, y no se toca. Pero el resto no tiene por qué dormir junto a él. Esa parte es <strong style="color: var(--text);">tu motor</strong>, y debería estar trabajando.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Conocé cuánto rinde de verdad tu dinero hoy.</div>
+          <div class="step-desc">La mayoría de la gente no tiene idea de qué tasa le paga su cuenta o su plazo. Averigualo. Si rinde menos de lo que podría crecer en otras opciones, ya sabés que está dormido.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">Empezá con lo que tenés, hoy.</div>
+          <div class="step-desc">No esperés a tener "suficiente". <strong style="color: var(--text);">El interés compuesto premia al que empieza temprano</strong>, no al que empieza grande.</div>
+        </div>
+      </div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">Pero hay una pregunta que <em>esta guía</em><br>no puede responder sola…</p>
+    <div class="page-footer"><span class="meta">El dinero dormido</span><span>06 / 08</span></div>
+  </div>
+</div>
+
+<!-- PAGE 7 — CTA -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple" style="opacity: 0.6; width: 320px; height: 320px;"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>06 · Tu número exacto</div></div>
+    <div class="cta-block">
+      <h2 class="cta-headline">¿Cuánto está dejando<br>de ganar <em>TU dinero?</em></h2>
+      <p class="cta-sub">La tabla de esta guía usa un millón y tasas de ejemplo. <strong style="color: var(--text);">Tu caso es tuyo:</strong> tu monto, tu plazo, tu tolerancia al riesgo, tus metas. El número real solo se calcula viendo tu situación concreta.</p>
+      <div class="cta-card">
+        <div class="cta-card-row">
+          <div class="cta-meta"><div class="cta-meta-label">Duración</div><div class="cta-meta-value">30<em>min</em></div></div>
+          <div class="cta-meta"><div class="cta-meta-label">Costo</div><div class="cta-meta-value"><em>Sin</em> costo</div></div>
+          <div class="cta-meta"><div class="cta-meta-label">Compromiso</div><div class="cta-meta-value"><em>Sin</em> compromiso</div></div>
+        </div>
+        <div style="text-align: center;"><a href="#" class="cta-button">Agendá tu diagnóstico financiero →</a></div>
+        <div class="cta-channels">
+          <div class="channel"><span class="channel-dot"></span>WHATSAPP</div>
+          <div class="channel"><span class="channel-dot"></span>AGENDA EN LÍNEA</div>
+          <div class="channel"><span class="channel-dot"></span>@ALECONOMIES</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer"><span class="meta">El dinero dormido</span><span>07 / 08</span></div>
+  </div>
+</div>
+
+<!-- PAGE 8 — CIERRE -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="closing">
+      <div class="closing-logo"><div class="logo"><div class="logo-mark"></div>ALECONOMIES</div></div>
+      <div class="closing-tag">Servicios de inversión.<br><em>Asesoría regulada, conversación directa.</em></div>
+      <div class="disclaimer"><strong>ALECONOMIES · Servicios de Inversión.</strong> Asesoría regulada a través de Transcomer British International CR. Este material tiene fines exclusivamente educativos e informativos y no constituye una recomendación de inversión personalizada. Toda inversión conlleva riesgos, incluida la posible pérdida de capital. Los rendimientos pasados no garantizan resultados futuros. Las tasas utilizadas en los ejemplos son ilustrativas; verificá los datos vigentes con fuentes oficiales (BCCR). Para una asesoría ajustada a tu situación, consultá con un asesor financiero regulado.</div>
+      <div class="closing-contact"><strong>aleconomies.cr</strong> · WhatsApp · @aleconomies<br>Costa Rica · 2026</div>
+    </div>
+    <div class="page-footer"><span class="meta">El dinero dormido · Cierre</span><span>08 / 08</span></div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

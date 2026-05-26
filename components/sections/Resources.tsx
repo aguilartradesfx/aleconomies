@@ -384,20 +384,22 @@ export default function Resources() {
           <ResourceCard
             index={0}
             icon={FileText}
-            eyebrow="Guía PDF"
-            title="Los 5 errores que cometen los costarricenses al ahorrar"
-            description="Guía práctica en PDF con los errores más frecuentes y cómo evitarlos. Sin jerga financiera, sin relleno."
-            ctaLabel="Abrir"
-            href="#"
+            eyebrow="Guías PDF · 7 piezas"
+            title="Guías para arrancar"
+            description="Despertá la curiosidad y construí criterio: mitos, autodiagnóstico, mercados, monedas, perfil de riesgo y cómo detectar estafas."
+            ctaLabel="Acceder"
+            href="/recursos#arrancar"
+            ariaLabel="Ver guías para arrancar"
           />
           <ResourceCard
             index={1}
             icon={BookOpen}
-            eyebrow="Lecturas"
-            title="Mi biblioteca financiera"
-            description="Los libros, artículos y recursos que más han influido en mi forma de entender y gestionar el dinero."
-            ctaLabel="Abrir"
-            href="#"
+            eyebrow="Guías PDF · 4 piezas"
+            title="Guías para decidir"
+            description="Pasá de la intención a la acción: plan de 6 meses, qué hacer con el aguinaldo, las 12 preguntas al asesor e historias ticas reales."
+            ctaLabel="Acceder"
+            href="/recursos#decidir"
+            ariaLabel="Ver guías para decidir"
           />
           <ResourceCard
             index={2}

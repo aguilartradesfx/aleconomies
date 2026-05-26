@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALECONOMIES · Entendé el mercado de inversiones</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   ALECONOMIES · Brand Design System
+   Shared across all 11 lead-magnet pieces.
+   Dual-mode: web viewer (scrolling) + print (A4 paginated PDF).
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
+
+:root {
+  --bg-base: #0E1218;
+  --bg-deep: #090C11;
+  --bg-mid:  #141923;
+  --bg-elevated: #1A1F2A;
+
+  --ink-50:  #FAFAFA;
+  --ink-100: #F2F2F4;
+  --ink-200: #E0E0E5;
+  --ink-300: #BDBDC5;
+  --ink-400: #8E8E9C;
+  --ink-500: #6B6B78;
+  --ink-600: #4A4A55;
+  --ink-700: #2D2D38;
+  --ink-800: #1E1E26;
+
+  --text:    #ECECEF;
+  --text-2:  rgba(236, 236, 239, 0.78);
+  --text-3:  rgba(236, 236, 239, 0.52);
+  --text-4:  rgba(236, 236, 239, 0.34);
+
+  --purple: #8B5CF6;
+  --purple-light: #A78BFA;
+  --purple-bright: #C4B5FD;
+  --purple-glow: rgba(139, 92, 246, 0.4);
+  --purple-faint: rgba(139, 92, 246, 0.1);
+
+  --red: #EF4444;
+  --amber: #F59E0B;
+  --green: #10B981;
+
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  --sans: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+@page { size: A4; margin: 0; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ───────── EM (italic) — solid color to avoid Chromium print bleed ───────── */
+em {
+  text-decoration: none !important;
+  font-style: italic;
+}
+.display em, .cover-h em, .quote-card .quote em, .bridge-line em,
+.cta-headline em, .closing-tag em,
+.italic-accent, .preview-value em, .cta-meta-value em,
+.mito-text em, .myth-title em, .mes-title em {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  color: var(--purple-light) !important;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ═════════════════ SCREEN VIEWER MODE ═════════════════
+   Pages are shown as floating sheets on a dark backdrop.
+   A sticky toolbar holds the download button.
+*/
+@media screen {
+  body {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(60, 72, 95, 0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(40, 50, 70, 0.25) 0%, transparent 60%),
+      var(--bg-deep);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 80px 16px 60px;
+  }
+
+  .pages-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .page {
+    flex-shrink: 0;
+    width: 210mm;
+    height: 297mm;
+    background: var(--bg-base);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 32px 80px rgba(0, 0, 0, 0.6),
+      0 8px 24px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transform-origin: top center;
+  }
+
+  /* Mobile/tablet: scale pages down to fit viewport */
+  @media (max-width: 880px) {
+    body { padding: 64px 0 40px; }
+    .pages-wrap { gap: 16px; }
+    .page {
+      transform: scale(calc((100vw - 0px) / 794));
+      margin-bottom: calc((100vw - 794px) * 297 / 210);
+    }
+  }
+
+  /* ───────── TOOLBAR / DOWNLOAD BUTTON ───────── */
+  .toolbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 8px 8px 18px;
+    background: rgba(20, 25, 35, 0.78);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid var(--border-medium);
+    border-radius: 100px;
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 1px rgba(0, 0, 0, 0.4),
+      0 12px 40px rgba(0, 0, 0, 0.5);
+    max-width: calc(100vw - 32px);
+  }
+  .toolbar-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--text);
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .toolbar-title::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--purple);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--purple-glow);
+    flex-shrink: 0;
+  }
+  .toolbar-sep {
+    width: 1px;
+    height: 18px;
+    background: var(--border-medium);
+    margin: 0 4px;
+  }
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    background: var(--text);
+    color: var(--bg-deep);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .dl-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.18);
+  }
+  .dl-btn svg { width: 14px; height: 14px; }
+
+  @media (max-width: 600px) {
+    .toolbar { padding: 6px 6px 6px 14px; gap: 6px; }
+    .toolbar-title { font-size: 11px; }
+    .toolbar-title-text { display: none; }
+    .toolbar-sep { display: none; }
+    .dl-btn { padding: 8px 14px; font-size: 12px; }
+  }
+}
+
+/* ═════════════════ PRINT MODE ═════════════════
+   Hide toolbar, restore proper page breaks, no margins.
+*/
+@media print {
+  .toolbar { display: none !important; }
+  body { background: var(--bg-base); padding: 0; }
+  .pages-wrap { display: block; }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    page-break-after: always;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    transform: none !important;
+  }
+  .page:last-child { page-break-after: auto; }
+}
+
+/* ═════════════════ PAGE INTERNALS ═════════════════ */
+.page { position: relative; background: var(--bg-base); }
+
+/* Background mesh + blobs */
+.bg-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65% 50% at 50% 0%, rgba(60, 72, 95, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 100% 50%, rgba(45, 55, 75, 0.5) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(40, 50, 70, 0.45) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 0% 60%, rgba(50, 60, 80, 0.4) 0%, transparent 55%);
+}
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(50px);
+}
+.bg-blob-1 {
+  width: 280px; height: 280px;
+  top: -8%; left: 8%;
+  background: radial-gradient(circle, rgba(80, 95, 120, 0.55) 0%, rgba(60, 72, 95, 0.2) 50%, transparent 70%);
+  opacity: 0.7;
+}
+.bg-blob-2 {
+  width: 260px; height: 260px;
+  top: 35%; right: -10%;
+  background: radial-gradient(circle, rgba(70, 82, 105, 0.55) 0%, rgba(50, 60, 80, 0.2) 50%, transparent 70%);
+  opacity: 0.55;
+}
+.bg-blob-3 {
+  width: 320px; height: 320px;
+  bottom: -8%; left: 30%;
+  background: radial-gradient(circle, rgba(60, 72, 95, 0.5) 0%, rgba(45, 55, 75, 0.2) 50%, transparent 70%);
+  opacity: 0.5;
+}
+.bg-blob-purple {
+  width: 220px; height: 220px;
+  top: 50%; left: -8%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.28) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%);
+  opacity: 0.4;
+}
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 22mm 20mm;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ───────── EYEBROW BADGE ───────── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 13px 6px 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  border-radius: 100px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 500;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* ───────── DISPLAY TYPE ───────── */
+.display {
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -2.5px;
+  line-height: 0.98;
+}
+.h1 { font-size: 72pt; letter-spacing: -3px; }
+.h2 { font-size: 42pt; letter-spacing: -2px; }
+.h3 { font-size: 28pt; letter-spacing: -1.2px; }
+
+/* ───────── LEAD / BODY ───────── */
+.lead {
+  font-size: 13pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.body {
+  font-size: 11pt;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.body p + p { margin-top: 12px; }
+.body strong { color: var(--text); font-weight: 600; }
+
+.italic-accent { font-family: var(--serif); font-style: italic; color: var(--purple-light); }
+
+/* ───────── GLASS CARD ───────── */
+.card {
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 12px 36px rgba(0, 0, 0, 0.35);
+}
+.card.featured {
+  border-color: var(--border-strong);
+  position: relative;
+}
+.card.featured::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 24px; right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* ───────── LOGO ───────── */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13pt;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+.logo-mark {
+  width: 22px; height: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.logo-mark::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1.4px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2.5px;
+  transform: rotate(45deg);
+}
+.logo-mark::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 5px; height: 5px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* ───────── PAGE FOOTER ───────── */
+.page-footer {
+  margin-top: auto;
+  padding-top: 12mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--text-4);
+  letter-spacing: 0.5px;
+}
+.page-footer .meta { text-transform: uppercase; letter-spacing: 1px; }
+
+/* ───────── COVER COMPONENTS ───────── */
+.cover .content { justify-content: space-between; padding: 22mm 20mm; }
+.cover-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cover-h {
+  font-size: 96pt;
+  line-height: 0.92;
+  letter-spacing: -4px;
+  font-weight: 500;
+  color: var(--text);
+}
+.cover-h em {
+  letter-spacing: -3.5px;
+  line-height: 0.92;
+}
+.cover-sub {
+  margin-top: 18px;
+  font-size: 14pt;
+  color: var(--text-2);
+  line-height: 1.5;
+  max-width: 130mm;
+}
+.cover-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+.cover-bottom-meta {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--text-4);
+  letter-spacing: 0.5px;
+  line-height: 1.7;
+}
+.cover-bottom-meta strong {
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+/* Cover preview floating card */
+.cover-preview {
+  margin-top: 12mm;
+  padding: 22px 24px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 24px 48px rgba(0, 0, 0, 0.4);
+  max-width: 110mm;
+  align-self: flex-start;
+}
+.preview-label {
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.preview-label::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.preview-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+.preview-value {
+  font-family: var(--sans);
+  font-size: 32pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -1.2px;
+  line-height: 1;
+}
+.preview-caption {
+  margin-top: 12px;
+  font-size: 9.5pt;
+  color: var(--text-3);
+}
+
+/* ───────── SECTION HEADER ───────── */
+.section-header { margin-bottom: 14mm; }
+.section-header .eyebrow { margin-bottom: 18px; }
+
+/* ───────── QUOTE CARD ───────── */
+.quote-card {
+  margin-top: 10mm;
+  padding: 28px 32px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  border-left: 2px solid var(--purple);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 12px 36px rgba(0, 0, 0, 0.3);
+}
+.quote-card .quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18pt;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -0.5px;
+  font-weight: 400;
+}
+
+/* ───────── FOOTNOTE ───────── */
+.footnote {
+  margin-top: auto;
+  padding-top: 10px;
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--text-4);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  border-top: 1px solid var(--border-soft);
+}
+.footnote strong { color: var(--text-2); font-weight: 500; }
+
+/* ───────── DATA TABLE ───────── */
+.table-card {
+  margin-top: 8mm;
+  padding: 26px 28px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 12px 36px rgba(0, 0, 0, 0.3);
+}
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left;
+  font-size: 9pt;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.data-table th.highlight { color: var(--purple-light); }
+.data-table td {
+  font-family: var(--mono);
+  font-size: 12pt;
+  color: var(--text);
+  font-weight: 500;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-soft);
+  letter-spacing: -0.3px;
+}
+.data-table td:first-child {
+  color: var(--text-2);
+  font-size: 11pt;
+  font-weight: 400;
+  font-family: var(--sans);
+}
+.data-table td.dim { color: var(--text-3); }
+.data-table td.highlight { color: var(--purple-light); font-weight: 500; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr.featured td { background: rgba(139, 92, 246, 0.05); }
+.data-table tr.featured td:first-child { color: var(--text); font-weight: 500; }
+
+/* ───────── HERO NUMBER ───────── */
+.hero-number-block {
+  margin-top: 9mm;
+  text-align: center;
+  padding: 22px 0 4px 0;
+}
+.hero-number-label {
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.hero-number {
+  font-family: var(--sans);
+  font-size: 84pt;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -4px;
+  background: linear-gradient(135deg, var(--purple-bright) 0%, var(--purple-light) 50%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(139, 92, 246, 0.25));
+}
+.hero-number-caption {
+  margin-top: 14px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14pt;
+  color: var(--text-2);
+  letter-spacing: -0.3px;
+}
+.hero-number-caption strong { color: var(--text); font-weight: 500; }
+
+/* ───────── BRIDGE LINE ───────── */
+.bridge-line {
+  margin-top: 10mm;
+  padding: 0 4mm;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14pt;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ───────── STEP CARDS (numbered list) ───────── */
+.steps {
+  margin-top: 6mm;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.step-card {
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 8px 24px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 20px;
+  align-items: flex-start;
+}
+.step-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 36pt;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.step-title {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.step-desc {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* ───────── CTA BLOCK ───────── */
+.cta-block { margin-top: auto; margin-bottom: auto; text-align: center; }
+.cta-headline {
+  font-size: 38pt;
+  line-height: 1.05;
+  letter-spacing: -1.8px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 18px;
+  max-width: 160mm;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-sub {
+  font-size: 13pt;
+  color: var(--text-2);
+  max-width: 140mm;
+  margin: 0 auto 12mm;
+  line-height: 1.55;
+}
+.cta-card {
+  padding: 32px 36px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 22px;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 24px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  max-width: 160mm;
+  margin: 0 auto;
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 32px; right: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 10px var(--purple-glow);
+}
+.cta-card-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.cta-meta { text-align: center; }
+.cta-meta-label {
+  font-size: 9pt;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.cta-meta-value {
+  font-family: var(--sans);
+  font-size: 16pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.4px;
+}
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: var(--text);
+  color: var(--bg-deep);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13pt;
+  border-radius: 100px;
+  border: none;
+  margin: 0 auto;
+}
+.cta-channels {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-soft);
+}
+.channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
+}
+.channel-dot {
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+
+/* ───────── CLOSING / DISCLAIMER ───────── */
+.closing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.closing-logo { margin-bottom: 28px; }
+.closing-logo .logo { font-size: 24pt; gap: 14px; }
+.closing-logo .logo-mark {
+  width: 38px; height: 38px;
+  border-radius: 9px;
+}
+.closing-logo .logo-mark::before { inset: 7px; border-radius: 4px; }
+.closing-logo .logo-mark::after { width: 8px; height: 8px; }
+.closing-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16pt;
+  color: var(--text-2);
+  margin-bottom: 14mm;
+  max-width: 140mm;
+  line-height: 1.45;
+}
+.disclaimer {
+  max-width: 145mm;
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.4);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  line-height: 1.65;
+  color: var(--text-3);
+  text-align: left;
+  letter-spacing: 0.1px;
+}
+.disclaimer strong { color: var(--text-2); font-weight: 500; }
+.closing-contact {
+  margin-top: 12mm;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--text-4);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+.closing-contact strong { color: var(--text-2); }
+
+/* ═════════════════ PIEZA-SPECIFIC COMPONENTS ═════════════════ */
+
+/* ───────── MENTIRA BLOCK (Pieza 2) ───────── */
+.mentira { display: flex; flex-direction: column; gap: 12mm; }
+.mentira-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 96pt;
+  line-height: 0.85;
+  letter-spacing: -5px;
+  background: linear-gradient(135deg, var(--purple-bright) 0%, var(--purple-light) 60%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.25));
+  font-weight: 400;
+}
+.mito-label {
+  font-size: 9pt;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.mito-text {
+  font-size: 26pt;
+  font-weight: 500;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  color: var(--text);
+}
+.myth-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.myth-block {
+  padding: 18px 22px;
+  background: rgba(20, 25, 35, 0.45);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+}
+.myth-block.realidad {
+  border-color: rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.04);
+}
+.myth-block-label {
+  font-size: 9pt;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.myth-block.realidad .myth-block-label { color: var(--purple-light); }
+.myth-block-label::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--text-3);
+  border-radius: 50%;
+}
+.myth-block.realidad .myth-block-label::before {
+  background: var(--purple);
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.myth-block-text {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.myth-block-text strong { color: var(--text); font-weight: 600; }
+.myth-action {
+  margin-top: 8mm;
+  padding: 16px 22px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-soft);
+  border-left: 2px solid var(--purple);
+  border-radius: 12px;
+}
+.myth-action-label {
+  font-size: 9pt;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.myth-action-text {
+  font-size: 11pt;
+  color: var(--text);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+/* ───────── SEMAFORO (Pieza 3) ───────── */
+.semaforo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8mm;
+}
+.semaforo-row {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 22px;
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  align-items: center;
+}
+.semaforo-light {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  position: relative;
+}
+.semaforo-light.green {
+  background: radial-gradient(circle, var(--green) 0%, rgba(16, 185, 129, 0.4) 70%);
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.5), inset 0 1px 4px rgba(255,255,255,0.3);
+}
+.semaforo-light.amber {
+  background: radial-gradient(circle, var(--amber) 0%, rgba(245, 158, 11, 0.4) 70%);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.5), inset 0 1px 4px rgba(255,255,255,0.3);
+}
+.semaforo-light.red {
+  background: radial-gradient(circle, var(--red) 0%, rgba(239, 68, 68, 0.4) 70%);
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.5), inset 0 1px 4px rgba(255,255,255,0.3);
+}
+.semaforo-title {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.semaforo-title strong { font-weight: 600; }
+.semaforo-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* Yes/No question block (Pieza 3) */
+.q-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6mm;
+}
+.q-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 100px;
+  gap: 14px;
+  padding: 16px 20px;
+  background: rgba(20, 25, 35, 0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  align-items: center;
+}
+.q-num {
+  font-family: var(--mono);
+  font-size: 13pt;
+  color: var(--purple-light);
+  font-weight: 500;
+}
+.q-text {
+  font-size: 10.5pt;
+  color: var(--text);
+  line-height: 1.5;
+}
+.q-yn {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.q-yn span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 10pt;
+  color: var(--text-3);
+  letter-spacing: 0.5px;
+}
+
+/* ───────── INSTRUMENT FICHA (Pieza 4) ───────── */
+.ficha {
+  padding: 18px 22px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: flex-start;
+}
+.ficha-name {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.ficha-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.ficha-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  text-align: right;
+}
+.ficha-risk {
+  display: flex;
+  gap: 3px;
+}
+.ficha-risk-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.ficha-risk-dot.on {
+  background: var(--purple);
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.ficha-horizonte {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  color: var(--text-3);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* ───────── PROFILE / RISK CARDS (Pieza 6) ───────── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 6mm;
+}
+.profile-card {
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 22px;
+  align-items: center;
+}
+.profile-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.profile-meter-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.profile-meter-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--purple), var(--purple-light));
+  border-radius: 100px;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.profile-name {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.profile-points {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--purple-light);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.profile-desc {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* Risk pictogram (icon) */
+.profile-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.profile-icon::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.profile-icon svg { width: 24px; height: 24px; color: var(--text); }
+
+/* ───────── ALERT FLAG (Pieza 7) ───────── */
+.flag-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6mm;
+}
+.flag-card {
+  padding: 16px 18px;
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-radius: 12px;
+}
+.flag-num {
+  font-family: var(--mono);
+  font-size: 9pt;
+  color: var(--red);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.flag-num::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+}
+.flag-text {
+  font-size: 10pt;
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.flag-text strong { font-weight: 600; }
+
+/* ───────── TIMELINE (Pieza 9) ───────── */
+.mes-card {
+  padding: 22px 26px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 22px;
+  align-items: flex-start;
+}
+.mes-card.featured {
+  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.04);
+}
+.mes-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16pt;
+  color: var(--purple-light);
+  letter-spacing: 0;
+  font-weight: 400;
+  line-height: 1;
+}
+.mes-num strong {
+  display: block;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 36pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -1.5px;
+  line-height: 1;
+  margin-top: 4px;
+}
+.mes-title {
+  font-size: 13pt;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.mes-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* ───────── CHECKLIST (Pieza 11) ───────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8mm;
+}
+.checklist-group-label {
+  font-size: 9pt;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.checklist-group-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-medium), transparent);
+}
+.checklist-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.check-row {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 14px;
+  padding: 12px 18px;
+  background: rgba(20, 25, 35, 0.4);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  align-items: center;
+}
+.check-box {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.check-text {
+  font-size: 10.5pt;
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.check-num {
+  font-family: var(--mono);
+  color: var(--purple-light);
+  font-weight: 500;
+  margin-right: 6px;
+}
+
+/* ───────── HISTORIA / NARRATIVE (Pieza 12) ───────── */
+.historia-card {
+  padding: 28px 32px;
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  margin-top: 8mm;
+  position: relative;
+}
+.historia-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 32px; right: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.historia-name {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22pt;
+  color: var(--text);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.historia-name em { color: var(--purple-light); }
+.historia-subtitle {
+  font-size: 11pt;
+  color: var(--text-3);
+  font-style: italic;
+  margin-bottom: 18px;
+}
+.historia-body {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.historia-body p + p { margin-top: 10px; }
+.historia-body strong { color: var(--text); font-weight: 600; }
+.historia-quote {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-left: 2px solid var(--purple);
+  background: rgba(139, 92, 246, 0.04);
+  border-radius: 0 10px 10px 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12pt;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* ───────── COMPARISON CARDS (mirror) ───────── */
+.comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8mm;
+}
+.comp-mirror {
+  padding: 22px 24px;
+  background: rgba(20, 25, 35, 0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+}
+.comp-mirror-label {
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.comp-mirror-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--purple-glow);
+}
+.comp-mirror-text {
+  font-size: 10.5pt;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.comp-mirror-text strong { color: var(--text); font-weight: 600; }
+
+/* ───────── REPARTO SEGMENTS (Pieza 10) ───────── */
+.reparto {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 8mm;
+}
+.reparto-seg {
+  padding: 22px 24px;
+  background: rgba(20, 25, 35, 0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.reparto-seg.crecer {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.06);
+}
+.reparto-seg.crecer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 16px; right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+.reparto-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18pt;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 8px;
+}
+.reparto-seg.crecer .reparto-label { color: var(--purple-light); }
+.reparto-desc {
+  font-size: 10pt;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ───────── SECTION TITLE WITHIN A PAGE ───────── */
+.subhead {
+  font-size: 18pt;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.8px;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+
+/* === Fix responsive (added post-handoff): prevenir overflow horizontal del wrapper en mobile.
+   El .page usa width:210mm con transform:scale en mobile, lo cual escala visualmente
+   pero el elemento sigue reservando espacio en el layout. Esto recorta el desbordamiento
+   sin tocar contenido, cifras ni compliance. === */
+html, body { overflow-x: clip; }
+@media (max-width: 880px) {
+  body { padding-left: 0; padding-right: 0; }
+  .pages-wrap { width: 100%; max-width: 100vw; overflow-x: hidden; }
+  .page { transform-origin: top left !important; margin-left: 0 !important; margin-right: 0 !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-title"><span class="toolbar-title-text">Entendé el mercado</span></div>
+  <div class="toolbar-sep"></div>
+  <a href="pieza-4-mercado-inversiones.pdf" download="ALECONOMIES - Entendé el mercado de inversiones.pdf" class="dl-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Descargar PDF
+  </a>
+</div>
+
+<div class="pages-wrap">
+
+<!-- PAGE 1 — COVER -->
+<div class="page cover">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="cover-top">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>Guía completa · Para empezar a entender</div>
+      <div class="logo"><div class="logo-mark"></div>ALECONOMIES</div>
+    </div>
+    <div style="margin-top: 18mm;">
+      <h1 class="cover-h" style="font-size: 80pt; letter-spacing: -3.5px;">Entendé <em>el mercado</em><br>de inversiones.</h1>
+      <p class="cover-sub">Un mapa claro de qué existe para invertir tu plata —en lenguaje tico, sin recomendaciones disfrazadas, sin nombrar productos. Solo educación honesta para que sepás cómo pensar.</p>
+      <div class="cover-preview" style="margin-top: 12mm; max-width: 130mm;">
+        <div class="preview-label">7 secciones · 7 instrumentos</div>
+        <div style="font-family: var(--serif); font-style: italic; font-size: 15pt; color: var(--text); line-height: 1.4; letter-spacing: -0.3px; margin-top: 4px;">Antes de invertir · 3 preguntas clave · Menú de instrumentos · Interés compuesto · Riesgo real · Glosario tico · Cierre.</div>
+      </div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-bottom-meta"><strong>ALECONOMIES · Servicios de Inversión</strong><br>Asesoría regulada · Costa Rica · 2026</div>
+      <div class="cover-bottom-meta" style="text-align: right;"><strong>01 / 14</strong><br>Pieza educativa</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 — ANTES DE INVERTIR -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>01 · Antes de invertir un solo colón</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 165mm;">Invertir no es el <em>primer</em> paso.<br>Es el <em>tercero.</em></h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>Mucha gente quiere saltar directo a <em>"¿en qué invierto?"</em> sin tener la base lista. Es como querer correr un maratón sin saber caminar. Antes de invertir, <strong>dos cosas</strong> tienen que estar en su lugar.</p>
+    </div>
+    <div style="margin-top: 8mm; display: flex; flex-direction: column; gap: 12px;">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Tus deudas caras.</div>
+          <div class="step-desc">Si tenés una tarjeta cobrándote intereses altísimos, ninguna inversión razonable le va a ganar a eso. <strong style="color: var(--text);">Pagar esa deuda ES tu mejor inversión:</strong> es un rendimiento garantizado igual a la tasa que dejás de pagar.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Tu fondo de emergencia.</div>
+          <div class="step-desc">Antes de poner plata a crecer (y por lo tanto a quedar menos disponible), necesitás un <strong style="color: var(--text);">colchón líquido de al menos 3 a 6 meses</strong> de tus gastos. Es lo que evita que tengás que vender una inversión a mala hora cuando la vida te sorprende.</div>
+        </div>
+      </div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">Si estas dos casillas no están marcadas,<br>ese es tu <em>punto de partida</em>, no el mercado.</p>
+    <div class="page-footer"><span class="meta">Entendé el mercado</span><span>02 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 3 — 3 PREGUNTAS -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>02 · Las 3 preguntas antes de poner un colón</div></div>
+    <h2 class="display h2" style="margin-bottom: 8px;">Toda buena decisión empieza<br>con <em>estas 3 preguntas.</em></h2>
+    <div class="steps" style="margin-top: 8mm;">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">¿En cuánto tiempo voy a necesitar esta plata?</div>
+          <div class="step-desc">No es lo mismo dinero que vas a usar en un año que dinero para dentro de veinte. <strong style="color: var(--text);">El plazo lo cambia todo:</strong> a más tiempo, más podés tolerar que algo suba y baje en el camino.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">¿Cuánto soporto que baje sin entrar en pánico?</div>
+          <div class="step-desc">Toda inversión con potencial de crecer puede tener bajones temporales. La pregunta honesta es: <strong style="color: var(--text);">¿a qué nivel de caída empezarías a perder el sueño y querrías vender?</strong> Esa respuesta define tu perfil.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">¿Para qué es esta plata, exactamente?</div>
+          <div class="step-desc">El retiro, la prima de una casa, la educación de un hijo, simplemente hacerla crecer. <strong style="color: var(--text);">Cada meta tiene su horizonte y su estrategia.</strong> Dinero sin meta es dinero sin rumbo.</div>
+        </div>
+      </div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">Ninguna de las tres pregunta <em>"¿qué está de moda?".</em><br>Empezar por ahí es el error más común.</p>
+    <div class="page-footer"><span class="meta">Entendé el mercado</span><span>03 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 4 — MENÚ INTRO -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>03 · El menú de instrumentos</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 165mm;">Qué existe para invertir,<br>en <em>lenguaje claro.</em></h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>Esto NO es un catálogo de recomendaciones: <strong>es un mapa</strong> para que sepás qué hay. Cada instrumento sirve para objetivos distintos. Para cada uno verás: qué es, su nivel de riesgo, y su horizonte sugerido.</p>
+      <p style="color: var(--text); font-weight: 400;">El elemento visual unificador es <span class="italic-accent">la barra de riesgo,</span> de 1 a 5 puntos. Más puntos no significa "malo": significa más volatilidad a cambio de más potencial.</p>
+    </div>
+    <div style="margin-top: 8mm; padding: 22px 26px; background: rgba(20, 25, 35, 0.5); border: 1px solid var(--border-medium); border-radius: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <span style="font-size: 9pt; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); font-weight: 500;">Cómo leer las fichas</span>
+        <span style="font-family: var(--mono); font-size: 9pt; color: var(--text-3);">Riesgo: 1 (bajo) → 5 (alto)</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 8px;">
+        <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;"><div class="ficha-risk" style="justify-content: center;"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div><div style="font-family: var(--mono); font-size: 8pt; color: var(--text-3); margin-top: 6px; letter-spacing: 0.5px;">BAJO</div></div>
+        <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;"><div class="ficha-risk" style="justify-content: center;"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div><div style="font-family: var(--mono); font-size: 8pt; color: var(--text-3); margin-top: 6px; letter-spacing: 0.5px;">BAJO-MEDIO</div></div>
+        <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;"><div class="ficha-risk" style="justify-content: center;"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div><div style="font-family: var(--mono); font-size: 8pt; color: var(--text-3); margin-top: 6px; letter-spacing: 0.5px;">MEDIO</div></div>
+        <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;"><div class="ficha-risk" style="justify-content: center;"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span></div><div style="font-family: var(--mono); font-size: 8pt; color: var(--text-3); margin-top: 6px; letter-spacing: 0.5px;">ALTO</div></div>
+        <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;"><div class="ficha-risk" style="justify-content: center;"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span></div><div style="font-family: var(--mono); font-size: 8pt; color: var(--text-3); margin-top: 6px; letter-spacing: 0.5px;">MUY ALTO</div></div>
+      </div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">A más potencial, <em>más riesgo.</em><br>La pregunta no es cuál es mejor; es cuál calza con tu plazo.</p>
+    <div class="page-footer"><span class="meta">Entendé el mercado</span><span>04 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 5 — FICHAS PARTE 1 (4 instrumentos) -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header" style="margin-bottom: 8mm;"><div class="eyebrow"><span class="eyebrow-dot"></span>03 · Fichas · Parte 1</div></div>
+    <h3 class="subhead" style="margin-bottom: 16px;">Renta fija y opciones más estables.</h3>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Cuenta a Plazo · CDP</div>
+          <div class="ficha-desc">Lo más sencillo y predecible. Le prestás al banco por un plazo fijo a cambio de un interés pactado. Sabés desde el inicio cuánto te pagarán. La contra: hoy las tasas son bajas, y si sacás antes del plazo, perdés parte del interés.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Corto plazo</div>
+        </div>
+      </div>
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Fondos de inversión</div>
+          <div class="ficha-desc">Ideal para quien empieza. Un grupo de personas junta su plata y un gestor profesional la invierte. Hay de muchos tipos (mercado de dinero, bonos, inmobiliarios). Para quien quiere diversificar con poco monto y prefiere delegar.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Corto-medio</div>
+        </div>
+      </div>
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Bonos</div>
+          <div class="ficha-desc">Le prestás a un gobierno o empresa y te pagan intereses en el tiempo. Más estables que las acciones, pero no están libres de riesgo: el emisor podría incumplir, y su precio se mueve con las tasas. Para ingresos más predecibles y estabilizar un portafolio.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Medio plazo</div>
+        </div>
+      </div>
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Fondos indexados · ETF</div>
+          <div class="ficha-desc">En lugar de apostar a una empresa, comprás <em>"un pedacito de todas"</em>. Un fondo que sigue a un índice completo del mercado. Diversificación instantánea y costos bajos. Suben y bajan con el mercado, por eso son para el largo plazo.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Largo plazo</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer"><span class="meta">Entendé el mercado · Fichas 1-4</span><span>05 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 6 — FICHAS PARTE 2 (3 instrumentos) -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header" style="margin-bottom: 8mm;"><div class="eyebrow"><span class="eyebrow-dot"></span>03 · Fichas · Parte 2</div></div>
+    <h3 class="subhead" style="margin-bottom: 16px;">Renta variable y opciones de mayor potencial.</h3>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Acciones</div>
+          <div class="ficha-desc">Comprás una parte de una empresa; ganás si crece, perdés si cae. La parte más emocionante y más volátil. Potencial de crecimiento alto, pero los bajones pueden ser fuertes. <strong>No es para dinero que vas a necesitar pronto.</strong> Para quien tiene horizonte largo y estómago para la montaña rusa.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Largo plazo</div>
+        </div>
+      </div>
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Bienes raíces</div>
+          <div class="ficha-desc">El favorito cultural del tico. Puede ser propiedad directa (alquiler) o fondos inmobiliarios (sin tener que ser dueño de un edificio). Ojo con la contra que pocos mencionan: <strong>es poco líquido</strong> (vender toma tiempo) y tiene costos de mantenimiento.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Largo plazo</div>
+        </div>
+      </div>
+      <div class="ficha">
+        <div>
+          <div class="ficha-name">Vehículos internacionales</div>
+          <div class="ficha-desc">Estructuras reguladas que permiten acceder a mercados globales, normalmente en dólares, con diversificación geográfica. Aquí es donde <strong>más conviene el acompañamiento profesional</strong>, porque las opciones y las reglas son más complejas. Para quien quiere salir de la concentración local.</div>
+        </div>
+        <div class="ficha-meta">
+          <div class="ficha-risk"><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot on"></span><span class="ficha-risk-dot"></span><span class="ficha-risk-dot"></span></div>
+          <div class="ficha-horizonte">Medio-largo</div>
+        </div>
+      </div>
+    </div>
+    <div class="footnote" style="margin-top: auto;"><strong>Importante.</strong> Estas fichas describen categorías generales para fines educativos. NO son recomendaciones específicas. El nivel de riesgo es una guía aproximada que depende del emisor, plazo y condiciones particulares de cada producto. Toda inversión conlleva riesgos. No se citan rendimientos numéricos por categoría sin fuente verificable.</div>
+  </div>
+</div>
+
+<!-- PAGE 7 — INTERÉS COMPUESTO -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>04 · El concepto que lo cambia todo</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 165mm;">Interés compuesto: por qué empezar <em>temprano</em> vale más que empezar <em>grande.</em></h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>Si te quedás con una sola idea de toda esta guía, que sea esta. El <strong>interés compuesto</strong> es cuando tus rendimientos generan, a su vez, más rendimientos. Tu plata trabaja, y luego el fruto de esa plata también se pone a trabajar.</p>
+      <p>Un ejemplo simple con la Regla del 72: dividí 72 entre la tasa anual y sabés en cuántos años se duplica tu dinero.</p>
+    </div>
+    <div class="card featured" style="margin-top: 8mm; padding: 26px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px;">
+        <span style="font-size: 9pt; letter-spacing: 1.5px; text-transform: uppercase; color: var(--purple-light); font-weight: 500;">La regla del 72 · al 8% anual</span>
+        <span style="font-family: var(--mono); font-size: 10pt; color: var(--text); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-medium); border-radius: 8px; padding: 5px 10px;">72 ÷ 8 = 9 años</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div style="padding: 16px 18px; background: rgba(139, 92, 246, 0.06); border: 1px solid rgba(139, 92, 246, 0.22); border-radius: 12px;">
+          <div style="font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;">En 9 años</div>
+          <div style="font-family: var(--sans); font-size: 26pt; font-weight: 500; color: var(--text); letter-spacing: -1px; line-height: 1; background: linear-gradient(135deg, var(--purple-bright), var(--purple-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">×2</div>
+          <div style="margin-top: 8px; font-size: 9pt; color: var(--text-3);">se duplica</div>
+        </div>
+        <div style="padding: 16px 18px; background: rgba(139, 92, 246, 0.06); border: 1px solid rgba(139, 92, 246, 0.22); border-radius: 12px;">
+          <div style="font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;">En 18 años</div>
+          <div style="font-family: var(--sans); font-size: 26pt; font-weight: 500; color: var(--text); letter-spacing: -1px; line-height: 1; background: linear-gradient(135deg, var(--purple-bright), var(--purple-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">×4</div>
+          <div style="margin-top: 8px; font-size: 9pt; color: var(--text-3);">se cuadruplica</div>
+        </div>
+        <div style="padding: 16px 18px; background: rgba(139, 92, 246, 0.06); border: 1px solid rgba(139, 92, 246, 0.22); border-radius: 12px;">
+          <div style="font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;">En 27 años</div>
+          <div style="font-family: var(--sans); font-size: 26pt; font-weight: 500; color: var(--text); letter-spacing: -1px; line-height: 1; background: linear-gradient(135deg, var(--purple-bright), var(--purple-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">×8</div>
+          <div style="margin-top: 8px; font-size: 9pt; color: var(--text-3);">se multiplica por 8</div>
+        </div>
+      </div>
+      <div style="margin-top: 14px; font-family: var(--mono); font-size: 8.5pt; color: var(--text-4); text-align: center;">Sin que vos metás un solo colón más. Solo el tiempo, trabajando.</div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">El ingrediente secreto no es el monto. <em>Es el tiempo.</em><br>Y es el único que no podés recuperar.</p>
+    <div class="page-footer"><span class="meta">Entendé el mercado</span><span>07 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 8 — RIESGO -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>05 · Riesgo no es lo que creés</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 165mm;">Volatilidad no es <em>lo mismo</em><br>que perder.</h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>Para mucha gente, <em>"riesgo"</em> significa <em>"puedo perder todo"</em>. Pero hay que separar dos cosas muy distintas: <strong>la volatilidad</strong> (que tu inversión suba y baje en el camino) y <strong>la pérdida permanente</strong> (que el dinero no vuelva).</p>
+      <p>Una inversión puede ser volátil y aun así, en el largo plazo, crecer. <strong>El problema no es que baje:</strong> el problema es vender en pánico cuando baja, convirtiendo una caída temporal en una pérdida real.</p>
+    </div>
+    <div style="margin-top: 8mm; padding: 24px 26px; background: rgba(20, 25, 35, 0.55); border: 1px solid var(--border-medium); border-radius: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px;">
+        <span style="font-size: 10pt; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3);">Volatilidad con tendencia a largo plazo</span>
+        <span style="font-family: var(--mono); font-size: 8.5pt; color: var(--text-4);">Ilustrativo · no representa producto</span>
+      </div>
+      <svg viewBox="0 0 500 130" preserveAspectRatio="none" style="width: 100%; height: 130px;">
+        <defs><linearGradient id="vd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A78BFA" stop-opacity="0.3"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></linearGradient></defs>
+        <line x1="0" y1="20" x2="500" y2="20" stroke="rgba(255,255,255,0.06)"/><line x1="0" y1="60" x2="500" y2="60" stroke="rgba(255,255,255,0.06)"/><line x1="0" y1="100" x2="500" y2="100" stroke="rgba(255,255,255,0.06)"/>
+        <path d="M0,100 L30,90 L60,95 L90,75 L120,85 L150,65 L180,80 L210,50 L240,68 L270,40 L300,55 L330,25 L360,40 L390,18 L420,30 L450,15 L480,22 L500,10 L500,130 L0,130 Z" fill="url(#vd)"/>
+        <path d="M0,100 L30,90 L60,95 L90,75 L120,85 L150,65 L180,80 L210,50 L240,68 L270,40 L300,55 L330,25 L360,40 L390,18 L420,30 L450,15 L480,22 L500,10" stroke="#A78BFA" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(139,92,246,0.5))"/>
+        <circle cx="120" cy="85" r="3" fill="#EF4444"/>
+        <text x="130" y="80" fill="#EF4444" font-family="Geist Mono" font-size="9" font-weight="500">vendió en pánico</text>
+      </svg>
+      <div style="display: flex; justify-content: space-between; margin-top: 8px; font-family: var(--mono); font-size: 8pt; color: var(--text-3);"><span>Año 1</span><span>Año 5</span><span>Año 10</span><span>Año 15</span></div>
+    </div>
+    <div class="footnote" style="margin-top: 8mm;"><strong>Concepto.</strong> El mismo instrumento puede ser arriesgado para dinero que necesitás en un año, y razonable para dinero que no tocás en quince. <strong>No existe la inversión "riesgosa" en abstracto: existe la inversión inadecuada para tu plazo.</strong> El mayor riesgo, para mucha gente, no es invertir: es llegar a viejo con el dinero dormido.</div>
+  </div>
+</div>
+
+<!-- PAGE 9 — GLOSARIO PARTE 1 -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>06 · Glosario tico · Parte 1</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px;">15 términos en <em>lenguaje de a de veras.</em></h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; font-size: 10pt; line-height: 1.5; max-width: 170mm;">
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Diversificar</strong><span style="color: var(--text-2);">No poner todos los huevos en una canasta; repartir para que un golpe no te tumbe todo.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Liquidez</strong><span style="color: var(--text-2);">Qué tan rápido podés convertir algo en efectivo sin perder valor. La cuenta de ahorros es líquida; una casa, no tanto.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Rendimiento</strong><span style="color: var(--text-2);">Lo que gana tu inversión, normalmente expresado en porcentaje al año.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Capital</strong><span style="color: var(--text-2);">La plata que ponés inicialmente.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Portafolio</strong><span style="color: var(--text-2);">El conjunto de todas tus inversiones juntas.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Perfil de inversionista</strong><span style="color: var(--text-2);">Cuánto riesgo podés y querés tomar, según tu situación y tu carácter.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Renta fija</strong><span style="color: var(--text-2);">Inversiones que pagan un interés más predecible, como bonos o plazos.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Renta variable</strong><span style="color: var(--text-2);">Inversiones cuyo valor sube y baja con el mercado, como acciones.</span></div>
+    </div>
+    <div class="page-footer"><span class="meta">Entendé el mercado · Glosario 1/2</span><span>09 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 10 — GLOSARIO PARTE 2 -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>06 · Glosario tico · Parte 2</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px;">7 más para tu <em>diccionario.</em></h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; font-size: 10pt; line-height: 1.5; max-width: 170mm;">
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Plazo / horizonte</strong><span style="color: var(--text-2);">Cuánto tiempo dejarás el dinero invertido.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Inflación / deflación</strong><span style="color: var(--text-2);">Cuando los precios en general suben (inflación) o bajan (deflación) en el tiempo.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Tasa de interés</strong><span style="color: var(--text-2);">El precio del dinero; lo que te pagan por prestarlo o lo que pagás por pedirlo.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Interés compuesto</strong><span style="color: var(--text-2);">Cuando tus rendimientos generan más rendimientos.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">ETF / fondo indexado</strong><span style="color: var(--text-2);">Un fondo que replica a un índice completo del mercado.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Custodia</strong><span style="color: var(--text-2);">Dónde y bajo qué respaldo se guarda tu dinero invertido.</span></div>
+      <div><strong style="color: var(--purple-light); display: block; margin-bottom: 4px; font-size: 10.5pt;">Plusvalía</strong><span style="color: var(--text-2);">El aumento de valor de un activo (como una propiedad) con el tiempo.</span></div>
+    </div>
+    <p class="bridge-line" style="margin-top: auto;">Ya conocés <em>el idioma.</em><br>Lo que falta es saber cómo aplicarlo a tu caso.</p>
+    <div class="page-footer"><span class="meta">Entendé el mercado · Glosario 2/2</span><span>10 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 11 — PUENTE -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>07 · El mapa no es la ruta</div></div>
+    <h2 class="display h2" style="margin-bottom: 24px; max-width: 170mm;">Ya sabés <em>qué</em> existe.<br>Lo que falta es saber<br>cuál es <em>el tuyo.</em></h2>
+    <div class="body" style="max-width: 158mm;">
+      <p>Esta guía te dio el <strong>mapa completo</strong> del territorio. Pero un mapa no te dice cuál es tu ruta: eso depende de dónde estás parado, a dónde querés llegar y cuánto tiempo tenés.</p>
+      <p>Lo que esta guía NO puede decirte es <strong>qué combinación de todo esto es la tuya</strong>, porque eso depende de tu situación específica: tus ingresos, tus metas, tu plazo, tu perfil. Y ahí, justamente, es donde entra la asesoría.</p>
+    </div>
+    <div class="quote-card" style="margin-top: 10mm;"><div class="quote">Ya entendés el <em>qué.</em><br>Hablemos del <em>cómo,</em> con tus números.</div></div>
+    <div class="page-footer"><span class="meta">Entendé el mercado · Puente</span><span>11 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 12 — CTA -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-2"></div><div class="bg-blob bg-blob-purple" style="opacity: 0.6; width: 320px; height: 320px;"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>Tu siguiente paso</div></div>
+    <div class="cta-block">
+      <h2 class="cta-headline">Sabés qué existe.<br>Veamos <em>cuál es el tuyo.</em></h2>
+      <p class="cta-sub">En 30 minutos miramos tu situación —monto, plazo, perfil, metas— y traducimos toda esta teoría en decisiones concretas para vos. <strong style="color: var(--text);">Sin recetas genéricas.</strong></p>
+      <div class="cta-card">
+        <div class="cta-card-row">
+          <div class="cta-meta"><div class="cta-meta-label">Duración</div><div class="cta-meta-value">30<em>min</em></div></div>
+          <div class="cta-meta"><div class="cta-meta-label">Costo</div><div class="cta-meta-value"><em>Sin</em> costo</div></div>
+          <div class="cta-meta"><div class="cta-meta-label">Compromiso</div><div class="cta-meta-value"><em>Sin</em> compromiso</div></div>
+        </div>
+        <div style="text-align: center;"><a href="#" class="cta-button">Agendá tu diagnóstico →</a></div>
+        <div class="cta-channels">
+          <div class="channel"><span class="channel-dot"></span>WHATSAPP</div>
+          <div class="channel"><span class="channel-dot"></span>AGENDA EN LÍNEA</div>
+          <div class="channel"><span class="channel-dot"></span>@ALECONOMIES</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer"><span class="meta">Entendé el mercado</span><span>12 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 13 — Espacio para que el cierre tenga aire -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="section-header"><div class="eyebrow"><span class="eyebrow-dot"></span>Para tener presente</div></div>
+    <h2 class="display h2" style="margin-bottom: 28px; max-width: 165mm;">Tres principios <em>que no aparecen<br>en ningún folleto.</em></h2>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Empezar tarde con mucho NO le gana a empezar temprano con poco.</div>
+          <div class="step-desc">El tiempo en el mercado le gana al tamaño del aporte. El interés compuesto premia al constante, no al heroico.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">"Riesgo" depende del plazo, no del instrumento.</div>
+          <div class="step-desc">Acciones para algo del próximo año es arriesgado. Acciones para algo dentro de 20 años puede ser lo razonable. El plazo es parte del análisis.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">El asesor regulado existe para que vos no tengás que volverte experto.</div>
+          <div class="step-desc">Convertí tu "no entiendo" en "voy a preguntarle a alguien que sí entienda". Esa es la decisión inteligente.</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer"><span class="meta">Entendé el mercado · Principios</span><span>13 / 14</span></div>
+  </div>
+</div>
+
+<!-- PAGE 14 — CIERRE -->
+<div class="page">
+  <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
+  <div class="content">
+    <div class="closing">
+      <div class="closing-logo"><div class="logo"><div class="logo-mark"></div>ALECONOMIES</div></div>
+      <div class="closing-tag">Servicios de inversión.<br><em>Asesoría regulada, conversación directa.</em></div>
+      <div class="disclaimer"><strong>ALECONOMIES · Servicios de Inversión.</strong> Asesoría regulada a través de Transcomer British International CR. Material con fines exclusivamente educativos e informativos. No constituye recomendación de inversión personalizada. <strong>No se recomienda ningún instrumento específico</strong> en esta guía. La descripción de categorías es educativa y no representa promesa de rendimiento. Toda inversión conlleva riesgos, incluida la posible pérdida de capital. Los rendimientos pasados no garantizan resultados futuros. Para una asesoría ajustada a tu situación, consultá con un asesor financiero regulado.</div>
+      <div class="closing-contact"><strong>aleconomies.cr</strong> · WhatsApp · @aleconomies<br>Costa Rica · 2026</div>
+    </div>
+    <div class="page-footer"><span class="meta">Entendé el mercado · Cierre</span><span>14 / 14</span></div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
