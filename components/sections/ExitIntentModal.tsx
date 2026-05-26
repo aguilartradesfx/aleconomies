@@ -15,26 +15,37 @@ export default function ExitIntentModal() {
   useEffect(() => {
     if (sessionStorage.getItem(STORAGE_KEY)) return
 
+    // Solo dispositivos con puntero fino (mouse/trackpad). En móvil/touch no hay
+    // forma confiable de detectar intención de cerrar, así que no mostramos.
+    const hasFinePointer =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(pointer: fine)').matches
+    if (!hasFinePointer) return
+
     let fired = false
+    let armed = false
+
     const show = () => {
-      if (fired) return
+      if (fired || !armed) return
       fired = true
       setVisible(true)
       sessionStorage.setItem(STORAGE_KEY, '1')
     }
 
-    // Desktop: cursor exits document from the top (heading to address bar / close tab)
+    // Arma el listener después de 4s para evitar disparos al cargar la página
+    // (cuando el mouse podría estar cerca del top de salida).
+    const armTimer = setTimeout(() => { armed = true }, 4_000)
+
+    // Dispara cuando el cursor sale del documento por arriba — dirección
+    // típica hacia la barra de URL, pestañas o botón de cerrar.
     const onLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) show()
     }
     document.addEventListener('mouseleave', onLeave)
 
-    // Fallback for all devices: fire after 60s if exit intent never triggered
-    const timer = setTimeout(show, 60_000)
-
     return () => {
       document.removeEventListener('mouseleave', onLeave)
-      clearTimeout(timer)
+      clearTimeout(armTimer)
     }
   }, [])
 
@@ -145,7 +156,7 @@ export default function ExitIntentModal() {
                   <div className="exit-modal-success-title">¡Listo! Revise su correo.</div>
                   <p className="exit-modal-success-sub">
                     Le enviaremos la guía en los próximos minutos. Si tiene alguna duda,
-                    puede agendar una llamada gratuita de 20 minutos desde esta misma página.
+                    puede agendar una llamada gratuita de 5 a 20 minutos desde esta misma página.
                   </p>
                   <button
                     className="exit-modal-submit"

@@ -193,7 +193,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease }}
             >
-              Su plata,
+              Su dinero,
               <br />
               su plan, <em className="em-gradient">su ritmo.</em>
             </motion.h1>
@@ -215,7 +215,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease }}
             >
-              <a href="#cta" className="btn-primary">
+              <a href="/agendar" className="btn-primary">
                 Agendar diagnóstico →
               </a>
               <a href="#calculadora" className="btn-glass">

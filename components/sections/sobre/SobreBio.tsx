@@ -7,12 +7,12 @@ import { bioAlejandro } from '@/data/bio-alejandro'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-export default function About() {
+export default function SobreBio() {
   return (
-    <section id="sobre" className="about-section">
+    <section className="sobre-bio">
       <div className="container">
         <div className="about-grid">
-          {/* Photo */}
+          {/* Foto + stats */}
           <motion.div
             className="about-photo-wrap"
             initial={{ opacity: 0, x: -24 }}
@@ -40,16 +40,16 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Text */}
+          {/* Texto + credentials */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.08, ease }}
           >
-            <SectionEyebrow>Sobre mí</SectionEyebrow>
+            <SectionEyebrow>Fundador y asesor principal</SectionEyebrow>
             <h2 className="section-title" style={{ marginBottom: 32 }}>
-              Yo no nací <em className="em-muted">sabiendo de finanzas.</em>
+              Alejandro <em className="em-muted">Araya.</em>
             </h2>
 
             {bioAlejandro.parrafos.map((p, i) => (

@@ -10,8 +10,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1.0,
     },
-    // Cuando se agreguen páginas, expandir acá:
-    // { url: `${baseUrl}/sobre`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    {
+      url: `${baseUrl}/sobre-nosotros`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    // Cuando se agreguen más páginas, expandir acá:
     // { url: `${baseUrl}/proceso`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     // { url: `${baseUrl}/recursos`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
   ]

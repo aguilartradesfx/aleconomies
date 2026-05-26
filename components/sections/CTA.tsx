@@ -28,10 +28,10 @@ export default function CTA() {
             </em>
           </h2>
           <p className="cta-sub">
-            30-45 minutos. Sin costo. Sin compromiso. Solo una conversación honesta sobre
+            5 a 20 minutos. Sin costo. Sin compromiso. Solo una conversación honesta sobre
             dónde está parado y a dónde quiere llegar.
           </p>
-          <a href="[enlace-calendly]" className="btn-primary">
+          <a href="/agendar" className="btn-primary">
             Agendar diagnóstico →
           </a>
         </motion.div>

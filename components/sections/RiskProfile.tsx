@@ -237,19 +237,16 @@ export default function RiskProfile() {
               </div>
             </div>
 
-            {/* Legend — non-zero + always-visible pending categories */}
+            {/* Legend — solo categorías con asignación > 0 */}
             <div className="risk-legend" aria-live="polite">
               {SEGMENTS.map(seg => {
                 const pct = alloc[seg.key as SegmentKey]
-                const alwaysShow = seg.key === 'litigation' || seg.key === 'insurers' || seg.key === 'offshore'
-                if (pct === 0 && !alwaysShow) return null
+                if (pct === 0) return null
                 return (
                   <div key={seg.key} className="risk-legend-item">
                     <div className="risk-legend-swatch" style={{ background: seg.color }} />
-                    <span style={{ opacity: pct === 0 ? 0.4 : 1 }}>{seg.label}</span>
-                    <span className="risk-legend-pct" style={{ opacity: pct === 0 ? 0.4 : 1 }}>
-                      {pct === 0 ? 'Próx.' : `${pct}%`}
-                    </span>
+                    <span>{seg.label}</span>
+                    <span className="risk-legend-pct">{`${pct}%`}</span>
                   </div>
                 )
               })}

@@ -86,3 +86,17 @@ export const websiteSchema = {
   publisher: { '@id': 'https://aleconomies.com/#person' },
   inLanguage: 'es-CR',
 }
+
+export const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': 'https://aleconomies.com/sobre-nosotros#aboutpage',
+  url: 'https://aleconomies.com/sobre-nosotros',
+  name: 'Sobre nosotros — Aleconomies',
+  description:
+    'Conozca a Alejandro Araya y al equipo detrás de Aleconomies. Asesoría financiera independiente en Costa Rica con más de 1.250 clientes asesorados.',
+  inLanguage: 'es-CR',
+  isPartOf: { '@id': 'https://aleconomies.com/#website' },
+  about: { '@id': 'https://aleconomies.com/#person' },
+  mainEntity: { '@id': 'https://aleconomies.com/#service' },
+}

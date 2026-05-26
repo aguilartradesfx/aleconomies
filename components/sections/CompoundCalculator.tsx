@@ -832,7 +832,7 @@ export default function CompoundCalculator() {
               <span style={{ fontWeight: 500, color: 'var(--purple-light)' }}>5% al 40% anual</span>
               . Conversemos para evaluar si encajan con su perfil.{' '}
               <a
-                href="#contacto"
+                href="/agendar"
                 style={{ color: 'var(--purple-light)', textDecoration: 'none', fontWeight: 500 }}
               >
                 → Agendar asesoría
