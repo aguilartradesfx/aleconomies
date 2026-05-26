@@ -1854,26 +1854,101 @@ body::after {
     gap: 48px;
     align-items: start;
   }
-  .recurso-detail-preview {
-    border-radius: 24px;
-    overflow: hidden;
-    padding: 8px;
-    background: rgba(20, 25, 35, 0.5);
-    border: 1px solid var(--border-medium);
-    box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
-      0 24px 60px rgba(0, 0, 0, 0.4);
-    position: relative;
+  /* Portada estilizada que reemplaza el iframe del HTML real, para que la
+     pieza se sienta como un ebook sin mostrar contenido prematuro. */
+  .lm-cover {
     aspect-ratio: 8.5 / 11;
     max-height: 720px;
+    border-radius: 24px;
+    padding: 40px 36px 32px;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 0%, rgba(139, 92, 246, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(60, 72, 95, 0.5) 0%, transparent 60%),
+      linear-gradient(180deg, rgba(26, 31, 42, 0.85) 0%, rgba(14, 18, 24, 0.95) 100%);
+    border: 1px solid var(--border-medium);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 1px rgba(0, 0, 0, 0.2),
+      0 32px 80px rgba(0, 0, 0, 0.45);
   }
-  .recurso-detail-iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    border-radius: 16px;
-    background: white;
-    pointer-events: none;
+  .lm-cover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 36px;
+    right: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    box-shadow: 0 0 10px var(--purple-glow);
+  }
+  .lm-cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+  }
+  .lm-cover-stage {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--purple-light);
+  }
+  .lm-cover-stage::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 0 8px var(--purple-glow);
+  }
+  .lm-cover-brand {
+    color: var(--text-4);
+    letter-spacing: 2px;
+  }
+  .lm-cover-middle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+  }
+  .lm-cover-title {
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 4.4vw, 54px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.05;
+    letter-spacing: -1.4px;
+    color: var(--text);
+  }
+  .lm-cover-bottom {
+    margin-top: auto;
+  }
+  .lm-cover-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong), transparent);
+    margin-bottom: 16px;
+  }
+  .lm-cover-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .lm-cover-number {
+    color: var(--text-4);
+    font-variant-numeric: tabular-nums;
   }
   .recurso-detail-meta {
     display: flex;
@@ -2953,7 +3028,7 @@ body::after {
   .resources-grid       { grid-template-columns: 1fr; }
   .recursos-grid        { grid-template-columns: 1fr; }
   .recurso-detail-grid  { grid-template-columns: 1fr; gap: 32px; }
-  .recurso-detail-preview { max-height: 520px; }
+  .lm-cover             { max-height: 520px; padding: 32px 28px 26px; }
   .footer-grid          { grid-template-columns: 1fr; gap: 32px; }
   .about-grid           { grid-template-columns: 1fr; gap: 32px; max-width: 480px; }
   .about-photo-wrap     { max-width: 360px; margin: 0 auto; width: 100%; }

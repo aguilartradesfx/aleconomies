@@ -74,15 +74,23 @@ export default async function LeadMagnetPage({ params }: Params) {
                 <h1 className="recurso-detail-title">{piece.title}</h1>
                 <p className="recurso-detail-desc">{piece.description}</p>
 
-                <div className="recurso-detail-preview">
-                  <iframe
-                    src={piece.htmlPath}
-                    title={`Vista previa de ${piece.title}`}
-                    className="recurso-detail-iframe"
-                    loading="lazy"
-                    aria-hidden="true"
-                    tabIndex={-1}
-                  />
+                <div className="lm-cover" aria-hidden="true">
+                  <div className="lm-cover-top">
+                    <span className="lm-cover-stage">{STAGE_LABEL[piece.stage]}</span>
+                    <span className="lm-cover-brand">ALECONOMIES</span>
+                  </div>
+                  <div className="lm-cover-middle">
+                    <h2 className="lm-cover-title">{piece.title}</h2>
+                  </div>
+                  <div className="lm-cover-bottom">
+                    <div className="lm-cover-divider" />
+                    <div className="lm-cover-meta">
+                      <span>{piece.pages} páginas · PDF</span>
+                      <span className="lm-cover-number">
+                        Guía Nº {(piece.htmlPath.match(/pieza-(\d+)/)?.[1] ?? '00').padStart(2, '0')}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
