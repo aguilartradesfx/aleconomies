@@ -1,4 +1,11 @@
+'use client'
+
+import { useState } from 'react'
+import { Calendar, CheckCircle2 } from 'lucide-react'
 import StepHeader, { Em } from '../StepHeader'
+
+const GHL_CALENDAR_ID = 'GXK5DdKpcpi3rSKBFdNB'
+const GHL_CALENDAR_URL = `https://api.leadconnectorhq.com/widget/booking/${GHL_CALENDAR_ID}`
 
 type Props = {
   // El CRM/dataLayer ya fueron disparados por el contenedor antes de montar este cierre.
@@ -7,32 +14,69 @@ type Props = {
 }
 
 export default function CierreCalificado({ decisorRequerido }: Props) {
+  const [showCalendar, setShowCalendar] = useState(false)
+
   return (
     <>
       <StepHeader
         eyebrow="Paso final"
-        title={<>Listo. Vamos a <Em>conversar.</Em></>}
+        title={<>Listo. <Em>Recibimos tu información.</Em></>}
       />
-      <p className="calif-cierre-body" style={{ marginBottom: 8 }}>
-        Su perfil encaja con el tipo de personas a las que puedo ayudar.
-        Agendemos una llamada de 5 a 20 minutos para entender mejor sus necesidades.
-      </p>
 
-      <div className="calif-calendar-placeholder" role="region" aria-label="Calendario de agendamiento">
-        <strong>[Embed de calendario pendiente]</strong>
-        Alejandro debe proveer el link de Calendly o Cal.com para embeber aquí.
+      <div className="calif-cierre-confirm">
+        <CheckCircle2 size={22} strokeWidth={1.8} className="calif-cierre-confirm-icon" />
+        <div>
+          <h3 className="calif-cierre-confirm-title">Te vamos a llamar pronto.</h3>
+          <p className="calif-cierre-confirm-body">
+            Ya tenemos toda tu información. En las próximas horas hábiles te
+            contactamos por WhatsApp o llamada para una conversación inicial sin costo.
+            {decisorRequerido && (
+              <>
+                {' '}Si la decisión requiere consultar con otra persona,
+                asegurate de que esté disponible — de lo contrario reprogramamos.
+              </>
+            )}
+          </p>
+        </div>
       </div>
 
-      <p className="calif-data-notice" style={{ marginTop: 0 }}>
-        La llamada es <strong style={{ color: 'var(--text-2)' }}>gratuita</strong>{' '}
-        y sin compromiso.
-        {decisorRequerido && (
-          <>
-            {' '}Si la decisión requiere consultar con otra persona, asegúrese de
-            que esté presente — de lo contrario reprogramaremos.
-          </>
+      <div className="calif-cierre-divider">
+        <span>o si lo preferís</span>
+      </div>
+
+      <div className="calif-cierre-acelerar">
+        <div className="calif-cierre-acelerar-head">
+          <span className="calif-cierre-acelerar-tag">Asesoría · USD 97</span>
+          <h3 className="calif-cierre-acelerar-title">
+            Agendá tu asesoría de inversión <Em>ahora mismo.</Em>
+          </h3>
+          <p className="calif-cierre-acelerar-body">
+            Si ya estás listo/a, elegí fecha y hora directamente en el calendario.
+            Al agendar estás confirmando tu compromiso con la asesoría de inversión
+            de USD 97.
+          </p>
+        </div>
+
+        {!showCalendar ? (
+          <button
+            type="button"
+            onClick={() => setShowCalendar(true)}
+            className="btn-primary calif-cierre-acelerar-cta"
+          >
+            <Calendar size={16} strokeWidth={2} />
+            Elegir fecha y hora
+          </button>
+        ) : (
+          <div className="calif-calendar-frame" role="region" aria-label="Calendario de agendamiento">
+            <iframe
+              src={GHL_CALENDAR_URL}
+              title="Calendario Aleconomies"
+              loading="lazy"
+              allow="payment"
+            />
+          </div>
         )}
-      </p>
+      </div>
     </>
   )
 }

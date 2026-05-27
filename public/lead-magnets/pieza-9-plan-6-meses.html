@@ -1471,8 +1471,60 @@ html, body { overflow-x: clip; }
   .page { transform-origin: top left !important; margin-left: 0 !important; margin-right: 0 !important; }
 }
 </style>
+<!-- aleconomies-logo-img-css -->
+<style>/* aleconomies logo image */
+.logo-mark-img{
+  width:22px;height:22px;
+  object-fit:contain;
+  display:block;
+  border-radius:5px;
+}
+.closing-logo .logo-mark-img{
+  width:38px;height:38px;
+  border-radius:9px;
+}
+.cover-h .logo-mark-img,
+.cover .logo-mark-img{
+  width:28px;height:28px;
+}
+</style>
+<!-- aleconomies-back-button -->
+<style>/* aleconomies back-to-library */
+.lm-back-to-library{
+  position:fixed;top:18px;left:18px;z-index:9999;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 14px;
+  background:rgba(20,25,35,.92);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  backdrop-filter:blur(20px) saturate(180%);
+  color:rgba(236,236,239,.88);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  font-family:'Geist',system-ui,sans-serif;
+  font-size:13px;font-weight:500;
+  text-decoration:none;letter-spacing:-.1px;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  transition:background .2s ease,border-color .2s ease,color .2s ease,transform .15s ease;
+}
+.lm-back-to-library:hover{
+  background:rgba(30,35,45,.96);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+  transform:translateY(-1px);
+}
+.lm-back-to-library svg{width:14px;height:14px;stroke-width:2}
+@media print{.lm-back-to-library{display:none!important}}
+@media (max-width:560px){
+  .lm-back-to-library{font-size:12px;padding:8px 12px;top:12px;left:12px}
+}
+</style>
 </head>
 <body>
+<a href="/recursos" class="lm-back-to-library" aria-label="Volver a la biblioteca de recursos">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+Volver a biblioteca
+</a>
+
 
 <div class="toolbar">
   <div class="toolbar-title"><span class="toolbar-title-text">El plan de 6 meses</span></div>
@@ -1491,7 +1543,7 @@ html, body { overflow-x: clip; }
   <div class="content">
     <div class="cover-top">
       <div class="eyebrow"><span class="eyebrow-dot"></span>Hoja de ruta · Plan de acción</div>
-      <div class="logo"><div class="logo-mark"></div>ALECONOMIES</div>
+      <div class="logo"><img class="logo-mark-img" src="/images/logo-icon-white.png" alt="">ALECONOMIES</div>
     </div>
     <div style="margin-top: 18mm;">
       <h1 class="cover-h" style="font-size: 76pt; letter-spacing: -3.3px;">De <em>ahorrador</em><br>a <em>inversionista</em><br>en 6 meses.</h1>
@@ -1713,7 +1765,7 @@ html, body { overflow-x: clip; }
   <div class="bg-mesh"></div><div class="bg-blob bg-blob-1"></div><div class="bg-blob bg-blob-3"></div><div class="bg-blob bg-blob-purple"></div><div class="bg-grid"></div>
   <div class="content">
     <div class="closing">
-      <div class="closing-logo"><div class="logo"><div class="logo-mark"></div>ALECONOMIES</div></div>
+      <div class="closing-logo"><div class="logo"><img class="logo-mark-img" src="/images/logo-icon-white.png" alt="">ALECONOMIES</div></div>
       <div class="closing-tag">Servicios de inversión.<br><em>Asesoría regulada, conversación directa.</em></div>
       <div class="disclaimer"><strong>ALECONOMIES · Servicios de Inversión.</strong> Asesoría regulada a través de Transcomer British International CR. <strong>El plan es un marco general, no una recomendación personalizada.</strong> Material con fines exclusivamente educativos e informativos. No constituye recomendación de inversión personalizada. Toda inversión conlleva riesgos, incluida la posible pérdida de capital. Los rendimientos pasados no garantizan resultados futuros. Para una asesoría ajustada a tu situación, consultá con un asesor financiero regulado.</div>
       <div class="closing-contact"><strong>aleconomies.cr</strong> · WhatsApp · @aleconomies<br>Costa Rica · 2026</div>

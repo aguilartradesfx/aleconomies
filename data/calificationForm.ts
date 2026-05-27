@@ -63,6 +63,7 @@ export const nivelConocimientoOpts: RadioOption[] = [
 ]
 
 export const instrumentosOpts: string[] = [
+  'Todos',
   'Acciones',
   'ETFs / Fondos indexados',
   'Bienes raíces',

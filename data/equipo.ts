@@ -48,4 +48,11 @@ export const equipo: MiembroEquipo[] = [
     fotoUrl:
       'https://res.cloudinary.com/dm4vljcnv/image/upload/q_auto/f_auto/v1779765963/WhatsApp_Image_2026-05-25_at_20.05.49_jsscmi.jpg',
   },
+  {
+    id: 'valeria-solano',
+    nombre: 'Valeria Solano',
+    rol: 'Edición y asistencia marketing',
+    fotoUrl:
+      'https://res.cloudinary.com/dm4vljcnv/image/upload/q_auto/f_auto/v1779830010/WhatsApp_Image_2026-05-26_at_05.38.51_h3zr3g.jpg',
+  },
 ]

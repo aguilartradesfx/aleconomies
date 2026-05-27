@@ -1,7 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
+import {
+  clearLeadData,
+  getLeadData,
+  saveLeadData,
+  type StoredLeadData,
+} from '@/lib/leadMagnetStorage'
 
 interface Props {
   slug: string
@@ -17,13 +23,27 @@ declare global {
   }
 }
 
+interface SubmitPayload {
+  name: string
+  email: string
+  phone?: string
+}
+
 export default function LeadMagnetForm({ slug }: Props) {
+  const [hydrated, setHydrated] = useState(false)
+  const [saved, setSaved] = useState<StoredLeadData | null>(null)
+
   const [name, setName]   = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting]   = useState(false)
   const [errors, setErrors]           = useState<FieldErrors>({})
   const [serverError, setServerError] = useState<string | null>(null)
+
+  useEffect(() => {
+    setSaved(getLeadData())
+    setHydrated(true)
+  }, [])
 
   function validate(): FieldErrors {
     const next: FieldErrors = {}
@@ -33,6 +53,20 @@ export default function LeadMagnetForm({ slug }: Props) {
     return next
   }
 
+  async function submitToApi(payload: SubmitPayload) {
+    const res = await fetch('/api/lead-capture', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, slug }),
+    })
+    const data = (await res.json().catch(() => ({}))) as {
+      ok?: boolean
+      redirectUrl?: string
+      error?: string
+    }
+    return { res, data }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setServerError(null)
@@ -40,24 +74,15 @@ export default function LeadMagnetForm({ slug }: Props) {
     setErrors(v)
     if (Object.keys(v).length > 0) return
 
+    const payload: SubmitPayload = {
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim() || undefined,
+    }
+
     setSubmitting(true)
     try {
-      const res = await fetch('/api/lead-capture', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          phone: phone.trim() || undefined,
-          slug,
-        }),
-      })
-
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean
-        redirectUrl?: string
-        error?: string
-      }
+      const { res, data } = await submitToApi(payload)
 
       if (!res.ok || !data.ok || !data.redirectUrl) {
         setServerError(
@@ -69,6 +94,8 @@ export default function LeadMagnetForm({ slug }: Props) {
         return
       }
 
+      saveLeadData(payload)
+
       window.dataLayer?.push({
         event: 'lead_magnet_submit',
         lead_magnet_slug: slug,
@@ -79,6 +106,81 @@ export default function LeadMagnetForm({ slug }: Props) {
       setServerError('Hubo un problema de red. Verificá tu conexión e intentá de nuevo.')
       setSubmitting(false)
     }
+  }
+
+  async function handleReturningAccess() {
+    if (!saved) return
+    setServerError(null)
+    setSubmitting(true)
+    try {
+      const { res, data } = await submitToApi(saved)
+      if (!res.ok || !data.ok || !data.redirectUrl) {
+        setServerError('No pudimos procesar tu solicitud. Intentá de nuevo en un momento.')
+        setSubmitting(false)
+        return
+      }
+      // Renueva la ventana de 30 días.
+      saveLeadData(saved)
+      window.dataLayer?.push({
+        event: 'lead_magnet_submit',
+        lead_magnet_slug: slug,
+        returning: true,
+      })
+      window.location.href = data.redirectUrl
+    } catch {
+      setServerError('Hubo un problema de red. Verificá tu conexión e intentá de nuevo.')
+      setSubmitting(false)
+    }
+  }
+
+  function handleUseDifferent() {
+    clearLeadData()
+    setSaved(null)
+  }
+
+  // Evita parpadeo: durante hidratación, mostramos un skeleton del tamaño aprox del form.
+  if (!hydrated) {
+    return <div className="glass recurso-form-card" aria-hidden="true" style={{ minHeight: 380 }} />
+  }
+
+  if (saved) {
+    const firstName = saved.name.split(/\s+/)[0]
+    return (
+      <div className="glass recurso-form-card">
+        <h2 className="recurso-form-title">
+          Hola de nuevo{firstName ? `, ${firstName}` : ''}.
+        </h2>
+        <p className="recurso-form-sub">
+          Ya tenemos tus datos. Accedé directamente a la guía y descargá el PDF.
+        </p>
+
+        <button
+          type="button"
+          onClick={handleReturningAccess}
+          className="btn-primary recurso-form-submit"
+          disabled={submitting}
+          style={{ marginTop: 18 }}
+        >
+          {submitting ? 'Cargando…' : 'Acceder a la guía'}
+          {!submitting && <ArrowRight size={16} strokeWidth={2} />}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleUseDifferent}
+          className="recurso-form-switch"
+          disabled={submitting}
+        >
+          Usar otro correo
+        </button>
+
+        {serverError && (
+          <p className="recurso-form-feedback" role="alert">
+            {serverError}
+          </p>
+        )}
+      </div>
+    )
   }
 
   return (

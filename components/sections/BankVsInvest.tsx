@@ -73,8 +73,8 @@ export default function BankVsInvest() {
             label="Aporte mensual"
             value={monthly}
             min={25_000}
-            max={500_000}
-            step={5_000}
+            max={1_500_000}
+            step={10_000}
             onChange={setMonthly}
             display={formatInput(monthly)}
           />

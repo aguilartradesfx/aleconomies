@@ -92,8 +92,25 @@ export default function Step06ExperienciaInversion({ form, update }: Props) {
                 options={instrumentoOptions}
                 values={form.instrumentos}
                 onChange={next => {
-                  if (!next.includes('Otros')) update({ instrumentos: next, instrumentoOtro: '' })
-                  else update({ instrumentos: next })
+                  const wasTodos = form.instrumentos.includes('Todos')
+                  const isTodos = next.includes('Todos')
+
+                  let final: string[]
+                  if (isTodos && !wasTodos) {
+                    // Acaba de marcar "Todos" → marcamos todo.
+                    final = [...instrumentosOpts]
+                  } else if (!isTodos && wasTodos) {
+                    // Acaba de desmarcar "Todos" → limpiamos todo.
+                    final = []
+                  } else {
+                    // Toggle individual: sincronizamos "Todos" según haya todos los reales.
+                    final = next.filter(v => v !== 'Todos')
+                    const reales = instrumentosOpts.filter(v => v !== 'Todos')
+                    if (reales.every(v => final.includes(v))) final = ['Todos', ...final]
+                  }
+
+                  if (!final.includes('Otros')) update({ instrumentos: final, instrumentoOtro: '' })
+                  else update({ instrumentos: final })
                 }}
                 helper="Selección múltiple."
               />

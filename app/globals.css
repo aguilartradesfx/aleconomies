@@ -1338,10 +1338,10 @@ body::after {
   .about-section { padding: 120px 0; }
   .about-grid {
     display: grid;
-    grid-template-columns: minmax(260px, 360px) 1fr;
-    gap: 56px;
+    grid-template-columns: minmax(320px, 460px) 1fr;
+    gap: 64px;
     align-items: center;
-    max-width: 1080px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   /* H2 dentro del bloque bio: más mesurado que un section-title de hero */
@@ -1382,20 +1382,22 @@ body::after {
     -webkit-backdrop-filter: blur(30px) saturate(180%);
     border: 1px solid var(--border-medium);
     border-radius: 14px;
-    padding: 14px 18px;
+    padding: 14px 16px;
     display: flex;
+    gap: 14px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
   .about-stat {
-    flex: 1;
-    font-size: 12px;
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 11px;
     color: var(--text-3);
-    line-height: 1.4;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
   }
   .about-stat:not(:last-child) {
     border-right: 1px solid var(--border-soft);
-    padding-right: 16px;
-    margin-right: 16px;
+    padding-right: 14px;
   }
   .about-stat-value {
     display: block;
@@ -2988,6 +2990,131 @@ body::after {
     margin-bottom: 8px;
     font-weight: 500;
   }
+
+  /* ── Cierre — recibido + opción acelerar ──────── */
+  .calif-cierre-confirm {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 20px 22px;
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.22);
+    border-radius: 16px;
+    margin-top: 4px;
+  }
+  .calif-cierre-confirm-icon {
+    color: #34d399;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .calif-cierre-confirm-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 6px;
+    letter-spacing: -0.2px;
+  }
+  .calif-cierre-confirm-body {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .calif-cierre-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 26px 0 22px;
+    color: var(--text-4);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .calif-cierre-divider::before,
+  .calif-cierre-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-soft);
+  }
+
+  .calif-cierre-acelerar {
+    padding: 22px 24px;
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.22);
+    border-radius: 18px;
+  }
+  .calif-cierre-acelerar-head {
+    margin-bottom: 18px;
+  }
+  .calif-cierre-acelerar-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    padding: 4px 10px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .calif-cierre-acelerar-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 8px;
+    letter-spacing: -0.4px;
+    line-height: 1.25;
+  }
+  .calif-cierre-acelerar-body {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .calif-cierre-acelerar-cta {
+    width: 100%;
+    justify-content: center;
+  }
+  .calif-calendar-frame {
+    margin-top: 4px;
+    border: 1px solid var(--border-medium);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg-base);
+  }
+  .calif-calendar-frame iframe {
+    width: 100%;
+    height: 720px;
+    border: 0;
+    display: block;
+  }
+  @media (max-width: 640px) {
+    .calif-calendar-frame iframe { height: 640px; }
+    .calif-cierre-acelerar-title { font-size: 18px; }
+  }
+
+  /* ── Lead magnet form — botón secundario "Usar otro correo" ─ */
+  .recurso-form-switch {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 8px;
+    background: transparent;
+    border: 0;
+    color: var(--text-3);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease;
+  }
+  .recurso-form-switch:hover { color: var(--text); }
+  .recurso-form-switch:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ────────────────────────────────────────────────
    Responsive
