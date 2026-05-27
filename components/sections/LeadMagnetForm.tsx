@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
+import PhoneInput from '@/components/ui/PhoneInput'
 import {
   clearLeadData,
   getLeadData,
@@ -221,13 +222,11 @@ export default function LeadMagnetForm({ slug }: Props) {
 
       <div className="recurso-form-row">
         <label htmlFor="lm-phone">Teléfono (opcional)</label>
-        <input
+        <PhoneInput
           id="lm-phone"
-          type="tel"
-          inputMode="tel"
-          autoComplete="tel"
           value={phone}
-          onChange={e => setPhone(e.target.value)}
+          onChange={setPhone}
+          placeholder="8888 7777"
         />
       </div>
 

@@ -1,5 +1,7 @@
+import { useId } from 'react'
 import StepHeader, { Em } from '../StepHeader'
 import { TextField } from '../fields'
+import PhoneInput from '@/components/ui/PhoneInput'
 import type { FormState } from '../types'
 
 type Props = {
@@ -8,6 +10,7 @@ type Props = {
 }
 
 export default function Step01Contacto({ form, update }: Props) {
+  const phoneId = useId()
   return (
     <>
       <StepHeader
@@ -31,16 +34,15 @@ export default function Step01Contacto({ form, update }: Props) {
         placeholder="Sus apellidos"
         autoComplete="family-name"
       />
-      <TextField
-        label="Número de teléfono"
-        name="telefono"
-        type="tel"
-        inputMode="tel"
-        value={form.telefono}
-        onChange={v => update({ telefono: v })}
-        placeholder="8888 8888"
-        autoComplete="tel"
-      />
+      <div className="calif-field">
+        <label htmlFor={phoneId} className="calif-label">Número de teléfono</label>
+        <PhoneInput
+          id={phoneId}
+          value={form.telefono}
+          onChange={v => update({ telefono: v })}
+          placeholder="8888 8888"
+        />
+      </div>
       <TextField
         label="Correo electrónico"
         name="correo"

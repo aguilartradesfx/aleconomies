@@ -3,17 +3,16 @@
 import { useState } from 'react'
 import { Calendar, CheckCircle2 } from 'lucide-react'
 import StepHeader, { Em } from '../StepHeader'
-
-const GHL_CALENDAR_ID = 'GXK5DdKpcpi3rSKBFdNB'
-const GHL_CALENDAR_URL = `https://api.leadconnectorhq.com/widget/booking/${GHL_CALENDAR_ID}`
+import CustomCalendar from '../CustomCalendar'
 
 type Props = {
   // El CRM/dataLayer ya fueron disparados por el contenedor antes de montar este cierre.
-  // Este componente es puramente presentacional.
   decisorRequerido: boolean
+  /** ID del contacto recién creado en GHL — necesario para agendar la cita. */
+  contactId: string | null
 }
 
-export default function CierreCalificado({ decisorRequerido }: Props) {
+export default function CierreCalificado({ decisorRequerido, contactId }: Props) {
   const [showCalendar, setShowCalendar] = useState(false)
 
   return (
@@ -51,9 +50,9 @@ export default function CierreCalificado({ decisorRequerido }: Props) {
             Agendá tu asesoría de inversión <Em>ahora mismo.</Em>
           </h3>
           <p className="calif-cierre-acelerar-body">
-            Si ya estás listo/a, elegí fecha y hora directamente en el calendario.
+            Si ya estás listo/a, elegí fecha y hora directamente acá.
             Al agendar estás confirmando tu compromiso con la asesoría de inversión
-            de USD 97.
+            de USD 97 (el pago lo coordinamos previo a la sesión).
           </p>
         </div>
 
@@ -67,14 +66,7 @@ export default function CierreCalificado({ decisorRequerido }: Props) {
             Elegir fecha y hora
           </button>
         ) : (
-          <div className="calif-calendar-frame" role="region" aria-label="Calendario de agendamiento">
-            <iframe
-              src={GHL_CALENDAR_URL}
-              title="Calendario Aleconomies"
-              loading="lazy"
-              allow="payment"
-            />
-          </div>
+          <CustomCalendar contactId={contactId} />
         )}
       </div>
     </>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileDown, CheckCircle2 } from 'lucide-react'
+import PhoneInput from '@/components/ui/PhoneInput'
 
 const STORAGE_KEY = 'exit-modal-shown'
 
@@ -150,15 +151,12 @@ export default function ExitIntentModal() {
                       required
                       autoComplete="email"
                     />
-                    <input
-                      className="exit-modal-input"
-                      type="tel"
-                      placeholder="Su número de teléfono"
+                    <PhoneInput
+                      className="exit-modal-phone"
                       value={phone}
-                      onChange={e => setPhone(e.target.value)}
+                      onChange={setPhone}
+                      placeholder="Su número de teléfono"
                       required
-                      autoComplete="tel"
-                      inputMode="tel"
                     />
                     <button
                       type="submit"

@@ -41,9 +41,9 @@ function pushDataLayer(entry: DataLayerEntry) {
 }
 
 // Envía el lead al endpoint server-side que crea/actualiza el contacto en GHL.
-// Fire-and-forget desde el cliente: si GHL falla, se loguea pero no se bloquea
-// la UI del cierre (el lead siempre ve su pantalla final).
-async function enviarLead(form: FormState, resultado: CalificationResult) {
+// Retorna el contactId si GHL respondió OK — lo necesitamos para crear la cita
+// si el usuario decide agendar la asesoría desde el cierre.
+async function enviarLead(form: FormState, resultado: CalificationResult): Promise<string | null> {
   try {
     const res = await fetch('/api/lead', {
       method: 'POST',
@@ -54,10 +54,14 @@ async function enviarLead(form: FormState, resultado: CalificationResult) {
     if (!res.ok) {
       // eslint-disable-next-line no-console
       console.warn('[lead] envío no OK:', res.status, await res.text().catch(() => ''))
+      return null
     }
+    const data = (await res.json().catch(() => ({}))) as { contactId?: string | null }
+    return data.contactId ?? null
   } catch (err) {
     // eslint-disable-next-line no-console
     console.warn('[lead] error de red al enviar:', err)
+    return null
   }
 }
 
@@ -65,6 +69,7 @@ export default function CalificationForm() {
   const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE)
   const [currentStepId, setCurrentStepId] = useState<StepId>('contacto')
   const [hydrated, setHydrated] = useState(false)
+  const [contactId, setContactId] = useState<string | null>(null)
   const startedRef = useRef(false)
   const submittedRef = useRef(false)
   const reportedStepsRef = useRef<Set<StepId>>(new Set())
@@ -147,7 +152,9 @@ export default function CalificationForm() {
       lead_etiqueta: resultado.etiqueta,
     })
 
-    enviarLead(form, resultado)
+    enviarLead(form, resultado).then(id => {
+      if (id) setContactId(id)
+    })
 
     // Limpiar sessionStorage al cerrar el flujo.
     try {
@@ -232,7 +239,12 @@ export default function CalificationForm() {
         return <StepConsentimiento form={form} update={update} />
       case 'cierre':
         if (resultado?.cierre === 'agendar_llamada') {
-          return <CierreCalificado decisorRequerido={form.decision === 'A'} />
+          return (
+            <CierreCalificado
+              decisorRequerido={form.decision === 'A'}
+              contactId={contactId}
+            />
+          )
         }
         return <CierreEducativo />
       default:
