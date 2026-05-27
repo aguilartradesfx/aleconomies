@@ -12,3 +12,6 @@ npm-debug.log*
 .claude/
 next-env.d.ts
 *.tsbuildinfo
+
+# Archivos archivados (briefs antiguos, assets sueltos) — eliminar eventualmente
+/_archive/
