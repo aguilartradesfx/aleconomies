@@ -10,9 +10,11 @@ type Props = {
   decisorRequerido: boolean
   /** ID del contacto recién creado en GHL — necesario para agendar la cita. */
   contactId: string | null
+  /** Nombre completo del lead — se concatena al título del evento en GHL. */
+  leadName?: string | null
 }
 
-export default function CierreCalificado({ decisorRequerido, contactId }: Props) {
+export default function CierreCalificado({ decisorRequerido, contactId, leadName }: Props) {
   const [showCalendar, setShowCalendar] = useState(false)
 
   return (
@@ -66,7 +68,7 @@ export default function CierreCalificado({ decisorRequerido, contactId }: Props)
             Elegir fecha y hora
           </button>
         ) : (
-          <CustomCalendar contactId={contactId} />
+          <CustomCalendar contactId={contactId} leadName={leadName} />
         )}
       </div>
     </>

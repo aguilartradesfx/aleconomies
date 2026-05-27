@@ -14,6 +14,8 @@ type Availability = Record<string, Slot[]>
 interface Props {
   /** Necesario para crear la cita en GHL; si falta, el botón de confirmar se deshabilita. */
   contactId: string | null
+  /** Nombre completo del lead — se concatena al título de la cita en GHL. */
+  leadName?: string | null
   onBooked?: (info: { slot: Slot; appointmentId: string | null }) => void
 }
 
@@ -64,7 +66,7 @@ function formatDateMedium(dateKey: string): string {
   }).format(new Date(`${dateKey}T12:00:00-06:00`))
 }
 
-export default function CustomCalendar({ contactId, onBooked }: Props) {
+export default function CustomCalendar({ contactId, leadName, onBooked }: Props) {
   const today = useMemo(() => todayInCR(), [])
 
   const [viewYear, setViewYear] = useState(today.year)
@@ -161,6 +163,10 @@ export default function CustomCalendar({ contactId, onBooked }: Props) {
     setBooking(true)
     setBookError(null)
     try {
+      const cleanName = (leadName ?? '').trim()
+      const title = cleanName
+        ? `Asesoría de Inversión | ${cleanName}`
+        : 'Asesoría de Inversión'
       const res = await fetch('/api/calendar/book', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -168,6 +174,7 @@ export default function CustomCalendar({ contactId, onBooked }: Props) {
           contactId,
           startISO: selectedSlot.startISO,
           endISO: selectedSlot.endISO,
+          title,
         }),
       })
       const data = (await res.json().catch(() => ({}))) as {

@@ -239,10 +239,12 @@ export default function CalificationForm() {
         return <StepConsentimiento form={form} update={update} />
       case 'cierre':
         if (resultado?.cierre === 'agendar_llamada') {
+          const leadName = `${form.nombre} ${form.apellidos}`.trim()
           return (
             <CierreCalificado
               decisorRequerido={form.decision === 'A'}
               contactId={contactId}
+              leadName={leadName || null}
             />
           )
         }
