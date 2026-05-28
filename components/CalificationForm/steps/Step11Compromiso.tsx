@@ -49,17 +49,17 @@ export default function Step11Compromiso({ form, update }: Props) {
           >
             <div style={{ marginTop: 16 }}>
               <div className="calif-helper-block">
-                Además del costo de la asesoría, para que el plan funcione necesita
-                poder destinar al menos <strong>₡25.000 mensuales</strong> (~$50 USD)
-                a inversión.
+                Usted puede invertir de forma mensual desde un mínimo de{' '}
+                <strong>₡25.000</strong> (~$50 USD), o bien, si prefiere una inversión
+                de aporte único, el mínimo es de <strong>₡500.000</strong> (~$1.000 USD).
                 <br /><br />
-                Si puede aportar ese mínimo, encaja con cualquiera de mis productos.
-                Si no, hoy ningún producto es viable y prefiero ser honesto antes
-                que arrancarlo a la fuerza.
+                Si puede cumplir con alguno de esos mínimos, encaja con cualquiera de
+                mis productos. Si no, hoy ningún producto es viable y prefiero ser
+                honesto antes que arrancarlo a la fuerza.
               </div>
 
               <RadioGroup<Compromiso>
-                legend="¿Puede comprometerse con el aporte mínimo?"
+                legend="¿Puede comprometerse con alguno de esos mínimos?"
                 name="aporteMinimo"
                 options={aporteMinimoOpts as ReadonlyArray<{ value: Compromiso; label: string }>}
                 value={form.aporteMinimo}

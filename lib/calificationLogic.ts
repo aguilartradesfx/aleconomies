@@ -58,7 +58,8 @@ export function calificarLead(form: FormState): CalificationResult {
 
 // Calcula la lista de pasos visibles dado el estado actual.
 // La barra de progreso y "Paso X de Y" usan esta lista.
-// Si un short-circuit aplica (P4=B o P18/18.1=B), el flujo termina en 'cierre'.
+// Si un short-circuit aplica (P4=B, deuda >50% no controlada, o P18/18.1=B),
+// el flujo termina en 'cierre'.
 export function getVisibleSteps(form: FormState): StepId[] {
   const steps: StepId[] = ['contacto', 'perfilPersonal', 'solvencia']
 
@@ -66,8 +67,15 @@ export function getVisibleSteps(form: FormState): StepId[] {
     return [...steps, 'cierre']
   }
 
+  steps.push('deudas')
+
+  // Short-circuit: deudas no controladas con más del 50% del salario descalifican
+  // de inmediato, sin hacerle completar el resto del formulario.
+  if (form.deudas === 'C' && form.deudaPct === 'C') {
+    return [...steps, 'cierre']
+  }
+
   steps.push(
-    'deudas',
     'ahorro',
     'experiencia',
     'perfilInversor',

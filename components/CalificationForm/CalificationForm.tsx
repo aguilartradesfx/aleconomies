@@ -262,8 +262,13 @@ export default function CalificationForm() {
 
   const isShortCircuitFromSolvencia = currentStepId === 'solvencia' && form.solvencia === 'B'
 
+  const isShortCircuitFromDeudas =
+    currentStepId === 'deudas' && form.deudas === 'C' && form.deudaPct === 'C'
+
   const nextLabel =
-    isShortCircuitFromSolvencia || isShortCircuitFromCompromiso ? 'Continuar' : 'Siguiente'
+    isShortCircuitFromSolvencia || isShortCircuitFromCompromiso || isShortCircuitFromDeudas
+      ? 'Continuar'
+      : 'Siguiente'
 
   const canGoNext = isStepComplete(currentStepId, form)
   const canGoBack = stepIndex > 0 && !isAtCierre

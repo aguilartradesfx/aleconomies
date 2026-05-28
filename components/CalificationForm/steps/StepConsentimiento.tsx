@@ -21,7 +21,7 @@ export default function StepConsentimiento({ form, update }: Props) {
         proporcionados en este formulario con el fin de evaluar mi perfil,
         contactarme y, en su caso, brindarme servicios de asesoría financiera.
         Entiendo que puedo solicitar acceso, rectificación o eliminación de mis
-        datos en cualquier momento escribiendo a [email pendiente de Alejandro].
+        datos en cualquier momento escribiendo a info@aleconomies.com.
       </div>
 
       <ConsentCheckbox

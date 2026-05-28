@@ -40,9 +40,9 @@ export default function Footer() {
             <div className="footer-col-title">Contacto</div>
             <div className="footer-links">
               <a href="mailto:aleconomies@gmail.com" className="footer-link">Email</a>
-              <a href="https://wa.me/[numero]" className="footer-link">WhatsApp</a>
-              <a href="[linkedin]" className="footer-link">LinkedIn</a>
-              <a href="[instagram]" className="footer-link">Instagram</a>
+              <a href="https://wa.me/[numero]" className="footer-link" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+              <a href="https://www.linkedin.com/in/linked-alejandro-araya-inversiones/" className="footer-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://www.instagram.com/alejaraes/" className="footer-link" target="_blank" rel="noopener noreferrer">Instagram</a>
             </div>
           </div>
 

@@ -134,7 +134,7 @@ export const compromisoOpts: RadioOption[] = [
 ]
 
 export const aporteMinimoOpts: RadioOption[] = [
-  { value: 'A', label: 'Sí, puedo comprometerme con al menos ₡25.000 mensuales' },
+  { value: 'A', label: 'Sí, puedo cumplir con alguno de esos mínimos (₡25.000 mensuales o ₡500.000 de aporte único)' },
   { value: 'B', label: 'No, todavía no estoy en esa posición' },
 ]
 
