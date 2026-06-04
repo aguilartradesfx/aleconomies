@@ -22,19 +22,19 @@ function DownSpark() {
 const pains = [
   {
     icon: Copy,
-    title: 'El mismo producto para todos',
-    line: 'El ejecutivo cumple una meta de colocación, no le arma un plan.',
+    title: 'Le venden lo mismo que a todos',
+    line: 'Fue al banco con ganas de invertir y salió con el producto de moda — el mismo que le ofrecen a cualquiera. Nadie le preguntó qué quiere lograr.',
   },
   {
     icon: TrendingDown,
-    title: 'Pierde contra la inflación',
-    line: 'La cuenta de ahorro "segura" se encoge un poco cada año.',
+    title: 'Su plata guardada vale menos cada año',
+    line: 'El dinero "seguro" en la cuenta o en un plazo casi no rinde. Y como todo sube de precio, con esa misma plata cada año compra menos.',
     chart: true,
   },
   {
     icon: UserX,
-    title: 'Cero seguimiento',
-    line: 'Firma, le entregan el producto y nadie vuelve a ajustar nada.',
+    title: 'Lo dejan solo después de firmar',
+    line: 'Le entregaron el producto y ahí terminó la relación. Nadie le explica, nadie le da seguimiento, nadie ajusta nada cuando su vida cambia.',
   },
 ]
 
@@ -51,8 +51,12 @@ export default function LandingPain() {
         >
           <SectionEyebrow>Por qué su dinero no avanza</SectionEyebrow>
           <h2 className="section-title">
-            El problema no es usted. Es el <em className="em-muted">molde.</em>
+            Quizás ya le pasó <em className="em-muted">esto.</em>
           </h2>
+          <p className="section-sub">
+            La mayoría no invierte mal por falta de ganas. Es que el sistema está
+            hecho para venderle productos — no para hacer crecer su dinero.
+          </p>
         </motion.div>
 
         <div className="problem-grid lp-pain-grid">
@@ -83,6 +87,20 @@ export default function LandingPain() {
             )
           })}
         </div>
+
+        <motion.p
+          className="problem-close"
+          style={{ marginTop: 48 }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease }}
+        >
+          El resultado: pasan los años y su dinero sigue{' '}
+          <em style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--purple-light)' }}>
+            donde mismo.
+          </em>
+        </motion.p>
       </div>
     </section>
   )

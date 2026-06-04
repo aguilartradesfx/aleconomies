@@ -3599,3 +3599,7 @@ body::after {
   .lp-method-grid { grid-template-columns: 1fr; }
   .lp-steps       { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .lp-fact-grid { grid-template-columns: 1fr !important; }
+}

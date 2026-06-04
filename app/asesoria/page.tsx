@@ -5,6 +5,8 @@ import LandingProof from '@/components/landing/LandingProof'
 import LandingPain from '@/components/landing/LandingPain'
 import LandingMethod from '@/components/landing/LandingMethod'
 import LandingProcess from '@/components/landing/LandingProcess'
+import LandingFact from '@/components/landing/LandingFact'
+import LandingCompound from '@/components/landing/LandingCompound'
 import LandingCTABand from '@/components/landing/LandingCTABand'
 import LandingFooter from '@/components/landing/LandingFooter'
 import BankVsInvest from '@/components/sections/BankVsInvestLazy'
@@ -35,6 +37,8 @@ export default function AsesoriaPage() {
         <LandingHero />
         <LandingProof />
         <LandingPain />
+        <LandingFact />
+        <LandingCompound />
         <BankVsInvest />
         <LandingMethod />
         <LandingCTABand
