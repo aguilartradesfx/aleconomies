@@ -19,6 +19,12 @@ interface Props {
   onBooked?: (info: { slot: Slot; appointmentId: string | null }) => void
 }
 
+declare global {
+  interface Window {
+    dataLayer?: Record<string, unknown>[]
+  }
+}
+
 const MONTHS_ES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
@@ -193,6 +199,16 @@ export default function CustomCalendar({ contactId, leadName, onBooked }: Props)
       }
       const info = { slot: selectedSlot, appointmentId: data.appointmentId ?? null }
       setBooked(info)
+
+      if (typeof window !== 'undefined') {
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({
+          event: 'appointment_booked',
+          appointment_id: info.appointmentId,
+          appointment_start: info.slot.startISO,
+        })
+      }
+
       onBooked?.(info)
     } catch {
       setBookError('Error de red al confirmar. Verificá tu conexión.')
