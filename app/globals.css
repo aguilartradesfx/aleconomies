@@ -3573,3 +3573,29 @@ body::after {
     transition-duration:       0.01ms !important;
   }
 }
+
+/* ────────────────────────────────────────────────
+   Landing /asesoria — grids responsive
+   (clases sin @layer para ganar sobre los defaults
+   y manejar su propio colapso en mobile)
+──────────────────────────────────────────────── */
+.lp-proof-grid  { grid-template-columns: repeat(4, 1fr); }
+.lp-pain-grid   { grid-template-columns: repeat(3, 1fr); }
+.lp-method-grid { grid-template-columns: repeat(4, 1fr); }
+.lp-steps       { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1000px) {
+  .lp-method-grid    { grid-template-columns: repeat(2, 1fr); }
+  .lp-steps          { grid-template-columns: repeat(2, 1fr); }
+  .lp-step-connector { display: none; }
+}
+
+@media (max-width: 768px) {
+  .lp-pain-grid  { grid-template-columns: 1fr; }
+  .lp-proof-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .lp-method-grid { grid-template-columns: 1fr; }
+  .lp-steps       { grid-template-columns: 1fr; }
+}
