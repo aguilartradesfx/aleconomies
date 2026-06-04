@@ -9,146 +9,169 @@ import { useInView, useReducedMotion } from 'framer-motion'
 const APORTE = 50_000 // ₡ por mes
 const RATE_ANUAL = 0.1 // 10% anual (ejemplo)
 const YEARS = 10
-const MESES = YEARS * 12 // 120
 const mr = RATE_ANUAL / 12
 
-function buildSeries() {
-  const out: { mes: number; saldo: number; aportado: number }[] = []
+// Saldo acumulado al final de cada año (1..10).
+function buildYears() {
+  const out: { anio: number; saldo: number; aportado: number }[] = []
   let saldo = 0
-  for (let m = 1; m <= MESES; m++) {
+  for (let m = 1; m <= YEARS * 12; m++) {
     saldo = saldo * (1 + mr) + APORTE
-    out.push({ mes: m, saldo: Math.round(saldo), aportado: APORTE * m })
+    if (m % 12 === 0) {
+      out.push({ anio: m / 12, saldo: Math.round(saldo), aportado: APORTE * m })
+    }
   }
   return out
 }
 
 const colones = (n: number) => '₡' + new Intl.NumberFormat('es-CR').format(Math.round(n))
 
-const HOLD_TICKS = 64 // pausa al final antes de reiniciar el loop
-
 export default function CompoundMockB() {
-  const series = useMemo(buildSeries, [])
+  const years = useMemo(buildYears, [])
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { margin: '-100px' })
+  const inView = useInView(ref, { margin: '-120px' })
   const reduced = useReducedMotion()
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(0) // 0..YEARS
 
   useEffect(() => {
     if (reduced) {
-      setStep(MESES - 1)
+      setStep(YEARS)
       return
     }
-    if (!inView) return
-    let counter = 0
+    if (!inView) {
+      setStep(0) // reinicia para que la animación se repita al volver a la sección
+      return
+    }
+    let s = 0
     const id = setInterval(() => {
-      counter++
-      if (counter <= MESES) setStep(counter - 1)
-      else if (counter >= MESES + HOLD_TICKS) counter = 0
-    }, 24)
+      s++
+      setStep(s)
+      if (s >= YEARS) clearInterval(id)
+    }, 200) // 10 años × 200ms ≈ 2s, una sola pasada
     return () => clearInterval(id)
   }, [inView, reduced])
 
-  const cur = series[Math.min(step, MESES - 1)]
+  const cur = step === 0
+    ? { saldo: 0, aportado: 0 }
+    : years[Math.min(step, YEARS) - 1]
   const interes = cur.saldo - cur.aportado
-  const maxSaldo = series[MESES - 1].saldo
-  const aniosTranscurridos = ((cur.mes) / 12).toFixed(1)
+  const maxSaldo = years[YEARS - 1].saldo
 
   return (
     <div
       ref={ref}
-      className="glass-heavy"
-      style={{ padding: 36, borderRadius: 28, maxWidth: 820, margin: '0 auto' }}
+      className="glass-heavy lp-compound-grid"
+      style={{ padding: 40, borderRadius: 28, display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 44, alignItems: 'center' }}
     >
-      {/* Header con totales (cuentan hacia arriba) */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 28 }}>
-        <div>
-          <div className="card-label" style={{ marginBottom: 8 }}>
-            <span className="card-label-dot" />
-            Año {aniosTranscurridos} de {YEARS}
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(32px, 5.5vw, 50px)',
-              fontWeight: 600,
-              letterSpacing: '-2px',
-              color: 'var(--text)',
-              lineHeight: 1,
-            }}
-          >
-            {colones(cur.saldo)}
-          </div>
+      {/* ── Columna izquierda: supuesto + resultado ── */}
+      <div>
+        <div className="stat-label" style={{ marginBottom: 10 }}>Usted invierte</div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 6 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(30px, 4vw, 40px)', fontWeight: 600, letterSpacing: '-1.5px', color: 'var(--text)' }}>
+            {colones(APORTE)}
+          </span>
+          <span style={{ fontSize: 16, color: 'var(--text-3)' }}>/ mes</span>
         </div>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'flex-end' }}>
-          <div>
+        <div style={{ fontSize: 14, color: 'var(--text-3)' }}>
+          durante {YEARS} años · {Math.round(RATE_ANUAL * 100)}% anual (ejemplo)
+        </div>
+
+        <hr className="risk-divider" style={{ margin: '24px 0' }} />
+
+        <div className="stat-label" style={{ marginBottom: 10 }}>En {YEARS} años tendría</div>
+        <div
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(34px, 5vw, 48px)',
+            fontWeight: 600,
+            letterSpacing: '-2px',
+            lineHeight: 1,
+            marginBottom: 18,
+            background: 'linear-gradient(135deg, var(--purple-light), var(--purple-bright))',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          {colones(cur.saldo)}
+        </div>
+
+        <div style={{ display: 'flex', gap: 12 }}>
+          <div className="stat-card" style={{ flex: 1 }}>
             <div className="stat-label">Usted aportó</div>
             <div className="stat-value">{colones(cur.aportado)}</div>
           </div>
-          <div>
+          <div className="stat-card stat-card-highlight" style={{ flex: 1 }}>
             <div className="stat-label">El interés sumó</div>
             <div className="stat-value stat-value-highlight">{colones(interes)}</div>
           </div>
         </div>
       </div>
 
-      {/* Barras apiladas: aporte (gris) + interés compuesto (morado) */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 1, height: 210 }} aria-hidden="true">
-        {series.map((s, i) => {
-          const visible = i <= step
-          const aporteH = (s.aportado / maxSaldo) * 100
-          const interesH = ((s.saldo - s.aportado) / maxSaldo) * 100
-          const isHead = i === step
-          return (
+      {/* ── Columna derecha: gráfico de 10 barras (una por año) ── */}
+      <div>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, height: 230 }} aria-hidden="true">
+          {years.map((y, i) => {
+            const visible = i < step
+            const aporteH = (y.aportado / maxSaldo) * 100
+            const interesH = ((y.saldo - y.aportado) / maxSaldo) * 100
+            const isHead = i === step - 1
+            return (
+              <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%' }}>
+                <div
+                  style={{
+                    height: visible ? `${interesH}%` : '0%',
+                    background: 'linear-gradient(180deg, #A78BFA, #8B5CF6)',
+                    borderRadius: '4px 4px 0 0',
+                    boxShadow: isHead ? '0 0 16px rgba(139,92,246,0.6)' : undefined,
+                    transition: 'height 0.4s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                />
+                <div
+                  style={{
+                    height: visible ? `${aporteH}%` : '0%',
+                    background: 'linear-gradient(180deg, #4A4A55, #2D2D38)',
+                    transition: 'height 0.4s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                />
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Etiquetas de año */}
+        <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+          {years.map((y, i) => (
             <div
               key={i}
               style={{
                 flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                height: '100%',
-                opacity: visible ? 1 : 0,
-                transition: 'opacity 0.18s ease',
+                textAlign: 'center',
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                color: i < step ? 'var(--text-3)' : 'var(--text-4)',
+                transition: 'color 0.3s',
               }}
             >
-              <div
-                style={{
-                  height: visible ? `${interesH}%` : '0%',
-                  background: 'linear-gradient(180deg, #A78BFA, #8B5CF6)',
-                  borderRadius: '2px 2px 0 0',
-                  boxShadow: isHead ? '0 0 12px rgba(139,92,246,0.7)' : undefined,
-                  transition: 'height 0.18s ease',
-                }}
-              />
-              <div
-                style={{
-                  height: visible ? `${aporteH}%` : '0%',
-                  background: 'linear-gradient(180deg, #4A4A55, #2D2D38)',
-                  transition: 'height 0.18s ease',
-                }}
-              />
+              {y.anio}
             </div>
-          )
-        })}
+          ))}
+        </div>
+        <div style={{ textAlign: 'center', fontSize: 11, color: 'var(--text-4)', marginTop: 4 }}>Años</div>
+
+        {/* Leyenda */}
+        <div className="chart-legend" style={{ marginTop: 18, flexWrap: 'wrap' }}>
+          <span className="legend-item">
+            <span className="legend-dot" style={{ background: '#3A3A44' }} /> Lo que usted pone
+          </span>
+          <span className="legend-item">
+            <span className="legend-dot" style={{ background: '#8B5CF6' }} /> Lo que el interés compuesto suma
+          </span>
+        </div>
       </div>
 
-      {/* Eje */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-4)' }}>Hoy</span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-4)' }}>{YEARS} años</span>
-      </div>
-
-      {/* Leyenda */}
-      <div className="chart-legend" style={{ marginTop: 18, flexWrap: 'wrap' }}>
-        <span className="legend-item">
-          <span className="legend-dot" style={{ background: '#3A3A44' }} /> Lo que usted pone
-        </span>
-        <span className="legend-item">
-          <span className="legend-dot" style={{ background: '#8B5CF6' }} /> Lo que el interés compuesto suma
-        </span>
-      </div>
-
-      <p style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 16, lineHeight: 1.4 }}>
+      {/* Footnote full-width */}
+      <p style={{ gridColumn: '1 / -1', fontSize: 11, color: 'var(--text-4)', margin: 0, lineHeight: 1.4 }}>
         Ejemplo ilustrativo · aporte de {colones(APORTE)}/mes durante {YEARS} años a {Math.round(RATE_ANUAL * 100)}% anual.
         No constituye una promesa de rendimiento.
       </p>

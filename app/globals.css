@@ -3603,3 +3603,7 @@ body::after {
 @media (max-width: 768px) {
   .lp-fact-grid { grid-template-columns: 1fr !important; }
 }
+
+@media (max-width: 860px) {
+  .lp-compound-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
