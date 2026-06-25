@@ -6,6 +6,7 @@ import type { CalificationResult } from '@/lib/calificationLogic'
 interface LeadBody {
   form?: FormState
   resultado?: CalificationResult
+  source?: string
 }
 
 export async function POST(req: Request) {
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const ghl = await submitLeadToGHL(body.form, body.resultado)
+    const ghl = await submitLeadToGHL(body.form, body.resultado, body.source)
     return NextResponse.json({ ok: true, contactId: ghl.contact?.id ?? null })
   } catch (err) {
     console.error('[/api/lead] GHL submit failed:', err)

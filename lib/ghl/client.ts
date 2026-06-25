@@ -52,14 +52,16 @@ async function upsertContact(payload: ContactPayload): Promise<UpsertContactResp
 
 export async function submitLeadToGHL(
   form: FormState,
-  resultado: CalificationResult
+  resultado: CalificationResult,
+  source?: string
 ): Promise<UpsertContactResponse> {
+  const sourceTags = source ? ['Form corto'] : []
   return upsertContact({
     firstName: form.nombre || undefined,
     lastName:  form.apellidos || undefined,
     email:     form.correo || undefined,
     phone:     form.telefono || undefined,
-    tags:      [...GHL_TAGS, 'Calificación', `Calificación: ${resultado.etiqueta}`],
+    tags:      [...GHL_TAGS, 'Calificación', `Calificación: ${resultado.etiqueta}`, ...sourceTags],
     customFields: mapFormToCustomFields(form, resultado),
   })
 }
