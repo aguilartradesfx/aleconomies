@@ -2570,6 +2570,22 @@ body::after {
     margin: 0 auto;
     padding: 0 24px;
   }
+
+  /* ── /aplicar — Mini-landing de captura ───────── */
+  .aplicar-wordmark {
+    display: inline-block;
+    margin-bottom: 28px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .aplicar-wordmark:hover {
+    color: var(--text);
+  }
   .calif-progress-wrap {
     margin-bottom: 28px;
   }
