@@ -13,9 +13,10 @@ import {
   type FormState,
   type IngresosRango,
   type Solvencia,
+  type RangoCapital,
 } from '@/components/CalificationForm/types'
 import { calificarLead, type CalificationResult } from '@/lib/calificationLogic'
-import { ingresosOpts, solvenciaOpts } from '@/data/calificationForm'
+import { ingresosOpts, solvenciaOpts, rangoCapitalOpts } from '@/data/calificationForm'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -23,10 +24,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 type CapitalChoice = 'cero' | 'A' | 'B' | 'C' | 'D'
 const capitalOpts: ReadonlyArray<{ value: CapitalChoice; label: string }> = [
   { value: 'cero', label: 'Aún no, deseo empezar desde cero' },
-  { value: 'A', label: 'Menos de $5.000 USD' },
-  { value: 'B', label: 'Entre $5.000 y $25.000 USD' },
-  { value: 'C', label: 'Entre $25.001 y $100.000 USD' },
-  { value: 'D', label: 'Más de $100.000 USD' },
+  ...rangoCapitalOpts.map(o => ({ value: o.value as Exclude<CapitalChoice, 'cero'>, label: o.label })),
 ]
 
 type DataLayerEntry = Record<string, unknown>
@@ -84,7 +82,7 @@ export default function ShortForm() {
 
   function buildForm(): FormState {
     const capitalDisponible = capital === 'cero' ? 'B' : 'A'
-    const rangoCapital = capital === 'cero' ? null : capital
+    const rangoCapital = capital === 'cero' ? null : (capital as RangoCapital)
     return {
       ...INITIAL_FORM_STATE,
       nombre: nombre.trim(),
