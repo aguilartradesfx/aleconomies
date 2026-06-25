@@ -55,9 +55,11 @@ export default function ShortForm() {
   const [errors, setErrors] = useState<FieldErrors>({})
   const [resultado, setResultado] = useState<CalificationResult | null>(null)
   const [contactId, setContactId] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState(false)
 
   const startedRef = useRef(false)
   const submittedRef = useRef(false)
+  const pendingRef = useRef<{ form: FormState; result: CalificationResult } | null>(null)
 
   // form_start una sola vez al montar.
   useEffect(() => {
@@ -97,6 +99,32 @@ export default function ShortForm() {
     }
   }
 
+  async function sendLead(form: FormState, result: CalificationResult) {
+    setSubmitError(false)
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ form, resultado: result, source: 'aplicar' }),
+        keepalive: true,
+      })
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; contactId?: string | null }
+      if (!res.ok || !data.ok) {
+        setSubmitError(true)
+        return
+      }
+      if (data.contactId) setContactId(data.contactId)
+    } catch {
+      setSubmitError(true)
+    }
+  }
+
+  function retrySend() {
+    if (pendingRef.current) {
+      void sendLead(pendingRef.current.form, pendingRef.current.result)
+    }
+  }
+
   async function handleSubmit(ev: React.FormEvent) {
     ev.preventDefault()
     if (submittedRef.current) return
@@ -119,25 +147,22 @@ export default function ShortForm() {
     // y habilita el botón de confirmar cita (mismo patrón que el form largo).
     setResultado(result)
 
-    try {
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ form, resultado: result, source: 'aplicar' }),
-        keepalive: true,
-      })
-      const data = (await res.json().catch(() => ({}))) as { contactId?: string | null }
-      if (data.contactId) setContactId(data.contactId)
-    } catch {
-      // El lead pudo no guardarse; el cierre calificado mostrará el aviso
-      // de "falta tu información" si no hay contactId para agendar.
-    }
+    pendingRef.current = { form, result }
+    void sendLead(form, result)
   }
 
   // ── Cierre inline ──
   if (resultado) {
     return (
       <GlassCard variant="heavy" className="calif-card">
+        {submitError && (
+          <p className="calif-error" role="alert" style={{ marginBottom: 16 }}>
+            No pudimos guardar su información.{' '}
+            <button type="button" onClick={retrySend} className="aplicar-retry">
+              Reintentar
+            </button>
+          </p>
+        )}
         {resultado.cierre === 'agendar_llamada' ? (
           <CierreCalificado
             decisorRequerido={false}
