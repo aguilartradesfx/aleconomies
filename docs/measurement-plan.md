@@ -37,6 +37,16 @@ Fuente de verdad de eventos del sitio para GA4 + Meta CAPI (Adsmurai).
 - `form_result`: `'calificado'` cuando el lead califica para asesoría, `'cierre_educativo'` cuando se redirige a recursos.
 - `lead_etiqueta`: etiqueta semántica del lead asignada por `calificarLead()` (ej. `'cliente-ideal'`, `'no-listo'`).
 - Es el evento **Lead** principal para campañas de calificación / asesoría.
+- El **mini-form `/aplicar`** (form corto) reusa este mismo evento con
+  `form_name: 'calificacion-corta'`. Dispara los mismos tags (Meta `Lead` +
+  GA4 `generate_lead`) porque el trigger `CE — form_submit` matchea por nombre
+  de evento, no por `form_name` — **no requiere cambios en GTM**.
+- Opcional: para separar form corto vs. largo en reportes de GA4, agregar el
+  parámetro `form_name` al tag `GA4 — generate_lead (calification)` (`{{DLV - form_name}}`).
+  Para contar Leads y optimizar Meta no hace falta.
+
+### `form_start`
+- Se dispara desde `/aplicar` (mini-form corto) con `form_name: 'calificacion-corta'` y desde el form largo de calificación con `form_name: 'calificacion'`.
 
 ### `appointment_booked`
 - El evento de **más valor**: significa que el lead reservó una llamada real.
