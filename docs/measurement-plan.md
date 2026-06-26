@@ -41,6 +41,11 @@ Fuente de verdad de eventos del sitio para GA4 + Meta CAPI (Adsmurai).
   `form_name: 'calificacion-corta'`. Dispara los mismos tags (Meta `Lead` +
   GA4 `generate_lead`) porque el trigger `CE — form_submit` matchea por nombre
   de evento, no por `form_name` — **no requiere cambios en GTM**.
+- El form corto es **multi-paso** (contacto → ingresos → conocimiento →
+  presupuesto): emite también `form_step_complete` y `form_abandon` con
+  `form_name: 'calificacion-corta'` (mismos tags, sin cambios en GTM). Su
+  `lead_etiqueta` se calcula en el componente (`CALIFICADO_ALTO` /
+  `TRACK_EDUCATIVO`), no con `calificarLead()`.
 - Opcional: para separar form corto vs. largo en reportes de GA4, agregar el
   parámetro `form_name` al tag `GA4 — generate_lead (calification)` (`{{DLV - form_name}}`).
   Para contar Leads y optimizar Meta no hace falta.
